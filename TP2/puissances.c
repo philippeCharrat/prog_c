@@ -1,20 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 /*
-    Nom : cercle.c
+    Nom : puissances.c
     Auteur : CHARRAT Philippe & BRUYERE Axel 
-    Objectif : Ce code va calculer et afficher l'aire, le périmètre d'un rayon fournis par l'utilisateur ou par défault.
+    Objectif : Ce code va calculer et afficher l'argument a à la puissance b.
     Remarque : On a utilisé une bibliothèque supplémentaire pour la fonction atoi. 
-                gcc cercle.c -o cercle -lm 
+                gcc puissances.c -o puissances -lm 
 */
 int main(int argc, char * argv[]) {
         // Initialisation et récupération de la variable et calculs.
         if (argc > 2) {
+		
                 argv++;
                 int a = atoi(*argv++);
                 int b = atoi(*argv++);
       		int result = 1;
-
+		
         	for (int i=0;i<b;i++) {
 			result = result*a;
 		}
