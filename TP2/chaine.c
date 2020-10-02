@@ -1,33 +1,67 @@
 #include <stdio.h>
 /*
-    Nom : fibonacci.c
+    Nom : chaine.c
     Auteur : CHARRAT Philippe & BRUYERE Axel 
-    Objectif : Ce code va simuler la suite de Fibonacci (https://fr.wikipedia.org/wiki/Suite_de_Fibonacci) à n itérations, avec n saisie par l'utilisateur. Le code fonctionne sous la forme d'une boucle for qui va calculer et afficher le ième termes (exclu, les termes 1,2,3).
-    Remarque : Si l'utilisateur entre une valeur inférieur à 3, cela est une valeur interdite donc on affiche les 3 premières itérations puis on finit le programme.
+    Objectif : Ce code va gérer 3 cas (avec un switch), le premier est afficher la taille de la première chaine. Le second cas est de copié une chaine dans une troisième via une boucle for. Le troisième est la concaténation de deux chaine.
 */
 
 int main(int argc, char ** argv) {
 
     	//-- Initialisations des variables --
         char message[50] ;
-	char message2[50] ;
-	printf("Veuillez saisir votre message : ");	
+	char messageDeux[50] ;
+	char messageTrois[50];
+	char cas ;
+	
+	
+	printf("Veuillez saisir votre cas (1- taille de la chaine; 2-copie d'une chaine; 3- Concaténation de deux chaines) : ");
+	scanf("%c",&(cas));
+	printf("le cas séléctionné est : %c \n",cas);
+	
+	printf("Veuillez saisir votre chaine : ");	
+	scanf("%s",&(message[0]));
+	printf("la première chaine est : %s\n",message);
+	
+	// Input disponible qu'en cas deux
+	if ( cas == '2') {
+		printf("Veuillez saisir votre seconde chaine : ");
+		scanf("%s",&(messageDeux[0]));
+		printf("la seconde chaine : %s\n",messageDeux);
+	}
+	
+	int isave;
+	
+	// Déterminer la taille d'une chaine 
 	for (int i =0; i <= 50; i++) {	
 		if(message[i] == '\0')  {
+			isave = i; 
 			break;
 		} 
 	}
-	i = i -2; 
+
 	switch(cas) {
+	// Cas : taille 
 	case '0':
-		printf("il y a %d valeurs dans la chaine 1",i);
+		printf("il y a %d valeurs dans la chaine 1 \n",isave);
 		break;
+	// Cas : Copie 
 	case '1' :
-		char message3[50];
-		for(int j=0; j <= i;j++) {
-			 message3[j] = message[j]
+		for(int j=0; j <= isave;j++) {
+			 messageTrois[j] = message[j];	
 		}
-		printf("le message est  
+		printf("le message est copié dans une troisième chaine : %s \n", messageTrois);
+	        break;
+	// Cas : Concaténation 
+	case '2':
+		for (int k=isave+1; k<= 50; k++) {
+                	if(messageDeux[k-isave-1] == '\0')  { 
+				message[k-1] = '\0';				
+				break; }
+			else { 	message[k-1] = messageDeux[k-isave-1];	}
+        	}
+		printf("La concaténation donne : %s",message);
+		printf("\n");
+		break;	
 
 	}
 
