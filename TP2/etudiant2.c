@@ -2,7 +2,7 @@
 #include <string.h>
 
 int main(){
- 
+ //On initialise la forme de la structure que nous allons utiliser
     struct etudiant {
         char prenom[30];
         char nom[30];
@@ -10,7 +10,7 @@ int main(){
         int C;
         int sys;
     };
-    
+ //On constitue notre structure avec les différents données
     struct etudiant students[5];
     strcpy(students[0].prenom, "Axel");
     strcpy(students[0].nom, "Bruyere");
@@ -42,6 +42,7 @@ int main(){
     students[4].C = 11;
     students[4].sys = 5;
     
+ //On parcout ensuite la structure pour récupérer et afficher les infos voulues
     int i;
     
     for (i = 0 ; i<5 ; i++){
