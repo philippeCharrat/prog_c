@@ -1,5 +1,8 @@
 #include <stdio.h>
 
+//Auteurs : Philippe CHARRAT et Axel BRUYERE 
+//Objectif : Créer des tableaux contenant des données sur 5 étudiants, puis les parcourir afin d'afficher les différentes informations pour chacun des étudiants
+
 int main(){
 
     //On initialise les variables pour 5 étudiants

@@ -1,13 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 //Auteurs : Philippe CHARRAT et Axel BRUYERE 
 //Objectif : Créer deux tableaux, l'un constitué d'entiers, l'autres de réels. Ces tableaux sont 
 //remplis de façon aléatoire. En utilisant les pointeurs, nous appliquons le protocole suivant : 
 //Si l'indice de la valeur et paire, on la multiplie par 3.
 
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 /*
  *
  */

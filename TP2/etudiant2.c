@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
+//Auteurs : Philippe CHARRAT et Axel BRUYERE 
+//Objectif : Créer une structure contenant différentes données sur 5 étudiants. On la parcourt ensuite pour afficher ces informations
+
 int main(){
  //On initialise la forme de la structure que nous allons utiliser
     struct etudiant {
