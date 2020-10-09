@@ -16,24 +16,20 @@ int main(){
         printf(" %02d -",tableau[i]);
     }
     
-    //Calcul du plus grand élément
+    //Calcul du plus petit et du plus grand élément
     int plus_grand[2] = {tableau[0],0};
+    int plus_petit[2] = {tableau[0],0};
     for (int i=1;i<100;i++){
         if (tableau[i] > plus_grand[0]){
             plus_grand[0] = tableau[i];
             plus_grand[1] = i;
         }
-    }
-    printf("\nLe plus grand élément est situé au rang %d et vaut %d \n",plus_grand[1], plus_grand[0]); 
-    
-    //Calcul du plus petit élément
-    int plus_petit[2] = {tableau[0],0};
-    for (int i=1;i<100;i++){
         if (tableau[i] < plus_petit[0]){
             plus_petit[0] = tableau[i];
             plus_petit[1] = i;
-        }
     }
+    printf("\nLe plus grand élément est situé au rang %d et vaut %d \n",plus_grand[1], plus_grand[0]); 
+    
     printf("Le plus petit élément est situé au rang %d et vaut %d \n",plus_petit[1], plus_petit[0]); 
     
     //
