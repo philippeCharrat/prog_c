@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Nom : recherche_dichotomique.c
 //Auteurs : Philippe CHARRAT et Axel BRUYERE
 //Objectif : écrire un programme qui crée un tableau de 100 entiers, qui le trie dans l'ordre croissant, puis qui recherche par la méthode de la recherche dichotomique si un entier passé en input si il est présent ou non dans la liste
 

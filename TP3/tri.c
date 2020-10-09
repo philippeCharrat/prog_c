@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Nom : tric.c
 //Auteurs : Philippe CHARRAT et Axel BRUYERE
-//Objectif : écrire un programme qui crée un tableau de 100 entiers puis qui le trie dans //l'ordre croissant
+//Objectif : écrire un programme qui crée un tableau de 100 entiers puis qui le trie dans l'ordre croissant
 int main(){
     
     //Création du tableau
