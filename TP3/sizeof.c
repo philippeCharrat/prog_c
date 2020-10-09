@@ -21,4 +21,4 @@ int main() {
 }
 
 //Le type int fait 4 octets
-//Tous les autres sont des pointeurs et nous sommes sur une machine 64bits avec un système d'exploitation sur 64bits également. Tous les pointeurs font donc 8 octetste
+//Tous les autres sont des pointeurs et nous sommes sur une machine 64bits avec un système d'exploitation sur 64bits également. Tous les pointeurs font donc 8 octets.

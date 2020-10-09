@@ -1,6 +1,6 @@
 #include <stdio.h>
 /*
- 	Nom : .c
+ 	Nom : octets.c
 	Auteur : CHARRAT Philippe & BRUYERE Axel 
 	Objectif : Ce code à pour fonction d'afficher les octets de différents variables à l'aide d'un pointeur char (qui s'incrémente de 1).
         Remarque : https://stackoverflow.com/questions/24885685/is-it-possible-to-assign-char-pointer-to-float-value, ce site a été une référence pour affecter un pointeur char pour un float ou double.	

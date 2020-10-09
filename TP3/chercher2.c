@@ -1,8 +1,11 @@
 #include <stdio.h>
 
 /*
+	Nom : chercher2.c
 	Auteurs : Philippe CHARRAT et Axel BRUYERE 
 	Objectif : Creer un tableau contenant 10 citations, puis l'utilisateur saisie une sequence. On va parcourir toutes les chaines et voir si la sequence correspond a une des citations a l'aide de deux boucles for et des pointeurs.
+Nous avons pris la liberté d'appeler ce prgramme chercher2.c et non chercher.c comme demandé dans l'énoncé car ce nom était déjà pris par le programme de l'exercice 3.4.
+
 */
 
 int main(void){
