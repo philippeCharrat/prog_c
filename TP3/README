@@ -1,7 +1,8 @@
 # Bibliothèque :
 	*stido.h
 	*string.h
-	*stdlib.h	
+	*stdlib.h
+	*time.h	
 
 # Références :
    Exercice 2.6 Octet.c - https://stackoverflow.com/questions/24885685/is-it-possible-to-assign-char-pointer-to-float-value, ce site a été une référence pour affecter un pointeur char pour un float ou double.	
@@ -9,4 +10,4 @@
 
 # Commentaires :
    Chaque code est commenté.
-   Le code de l'exercice 2 :
+   Le code de l'exercice 2 : Nous avons tout d'abord créé le tableau contenant nos 100 entiers aléatoires, grâce à la fonction rand(). Cela fait, on initialise deux tableaux de deux éléments contenant le premier élément du tableau et son rang. Ensuite nous parcourons le tableau, et pour chaque élément nous comparons avec les valeurs de nos "plus grand et "plus petit". Lorsque la valeur vérifiée est supérieure (respectivement inférieure) à notre "plus grand" (respectivement "plus petit"), nous échangeons les valeurs pour obtenir un nouveau "plus petit" ou "plus grand", et gardons également son rang pour pouvoir l'afficher. Finalement, nous affichons les plus grand élément trouvé, le plus petit élément trouvé, ainsi que leur rangs respectifs.

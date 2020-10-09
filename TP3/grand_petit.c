@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 //Nom : grand_petit.c
 //Auteurs : Philippe CHARRAT et Axel BRUYERE
@@ -9,6 +10,7 @@
 int main(){
     
     //Création du tableau
+    srand(time(NULL));
     int tableau[100];
     printf("Tableau généré : \n");
     for (int i=0;i<100;i++) {
@@ -27,6 +29,7 @@ int main(){
         if (tableau[i] < plus_petit[0]){
             plus_petit[0] = tableau[i];
             plus_petit[1] = i;
+        }
     }
     printf("\nLe plus grand élément est situé au rang %d et vaut %d \n",plus_grand[1], plus_grand[0]); 
     
