@@ -1,0 +1,12 @@
+# Bibliothèque :
+	*stido.h
+	*string.h
+	*stdlib.h	
+
+# Références :
+   Exercice 2.6 Octet.c - https://stackoverflow.com/questions/24885685/is-it-possible-to-assign-char-pointer-to-float-value, ce site a été une référence pour affecter un pointeur char pour un float ou double.	
+   Le code de couleur.c était requis pour écrire le programme couleur_compteur.c.
+
+# Commentaires :
+   Chaque code est commenté.
+   Le code de l'exercice 2 :
