@@ -30,6 +30,7 @@ int main(void){
 	for (int j=0; j<100;j++) { 
 		if (*ptr_verif == '\0') {
 			trouve = i; 
+			ptr_citation = ptr_citation + size;
 			break;
 		} else if(*ptr_citation == *ptr_verif) {	
 			ptr_citation = ptr_citation + 1;
