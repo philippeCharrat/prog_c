@@ -1,49 +1,28 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-/*
-	Auteurs : Philippe CHARRAT et Axel BRUYERE 
-	Objectif : Creer un tableau contenant 10 citations, puis l'utilisateur saisie une sequence. On va parcourir toutes les chaines et voir si la sequence correspond a une des citations a l'aide de deux boucles for et des pointeurs.
-*/
+//Auteurs : Philippe CHARRAT et Axel BRUYERE
+//Objectif : écrire un programme qui crée un tableau de 100 entiers puis qui cherche si un entier passé en argument se trouve dans le tableau
+int main(int argc,char ** argv){
+    
+    //Création du tableau
+    int tableau[100];
+    printf("Tableau généré : \n");
+    for (int i=0;i<100;i++) {
+        tableau[i] = rand() % 100;
+        printf(" %02d -",tableau[i]);
+    }
+    
+    //On parcourt la liste et on vérifie si l'entier y est présent
+    int entier = atoi(argv[1]);
+    for (int i = 0;i < 100;i++){
+        if (tableau[i] == entier){
+            printf("\nL'entier est présent à l'indice %d \n",i);
+            return(0);
+        }
+        printf("\n i : %d",i);
 
-int main(void){
-
-   //Initialisation du tableau de 10 citations
-   char citations[10][100] = {"L'homme est un loup pour l'homme","Science sans conscience n'est que ruine de l'ame","A vaincre sans peril, on triomphe sans gloire","Je est un autre","Je pense donc je suis","Un probleme sans solution est un probleme mal pose","L'enfer c'est les autres","Le souvenir est le parfum de l'ame","L'homme a besoin de passion pour exister","La religion est l'opium du peuple"};   
-   //Saisie de la sequence a verifier 
-   char phrase_a_verif[100];
-   printf("Veuillez saisir la sequence a verifier : ");
-   scanf("%s",&(phrase_a_verif[0]));
-
-   // Initialisation des variables et pointeurs 
-   char *ptr_citation =citations[0]; 
-   int trouve = 0;
-  
-   //Partie Affichage et Recherche 
-   printf("Les phrases sont : \n");
-
-   for (int i=1; i < 11; i++) {
-	// Re-definition des variables utiles par tour
-       	char *ptr_verif = &phrase_a_verif[0]; 
-	int size = 100;	
-	printf("phrase %d : %s\n",i,ptr_citation);
-	// Parcours des chaines avec 3 cas (1: char null = chaine trouvee; 2: si char sequence = char phrase, on continue; 3 : on stop car deux chars sont differents) 
-	for (int j=0; j<100;j++) { 
-		if (*ptr_verif == '\0') {
-			trouve = i; 
-			break;
-		} else if(*ptr_citation == *ptr_verif) {	
-			ptr_citation = ptr_citation + 1;
-			ptr_verif = ptr_verif + 1;
-			size = size - 1;
-		} else {
-			ptr_citation = ptr_citation+size;
-			break;
-		}
-	}
-   }
-   
-   // Affichage du resultat 
-   if(trouve != 0) {printf("Votre entrees est la citations n %d.\n",trouve); } 
-   else { printf("Votre entrees n'est pas dans les citations.\n"); }
-   return(0);
+    }
+    printf("\nL'entier n'est pas présent\n");
+    return(0);
 }
