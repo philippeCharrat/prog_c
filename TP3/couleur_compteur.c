@@ -44,13 +44,14 @@ int main(int argc, char ** argv) {
 		// -- Boucle pour tester les diffenrentes couleurs presentent 
 		for(int i = 0; i<taille; i++) {
 			// 2 cas : (1- deux couleurs identiques -> increment du compteur; 2- si la couleur n'est pas dans le tableau -> add couleurs) 
-			if(couleur_presente[i].rouge == couleurs[j].rouge && couleur_presente[i].bleu == couleurs[j].bleu && couleur_presente[i].vert == couleurs[j].vert) {
+			if(couleur_presente[i].rouge == couleurs[j].rouge && couleur_presente[i].bleu == couleurs[j].bleu && couleur_presente[i].vert == couleurs[j].vert && couleur_presente[i].alpha == couleurs[j].alpha) {
 				couleur_presente[i].count = couleur_presente[i].count + 1;
 				break;
 			} else if (i == taille-1) {
 				couleur_presente[taille].rouge = couleurs[j].rouge;
 				couleur_presente[taille].bleu = couleurs[j].bleu;
 				couleur_presente[taille].vert = couleurs[j].vert;
+				couleur_presente[taille].alpha = couleurs[j].alpha;
 				couleur_presente[taille].count = 1;
 				taille = taille + 1;
 				break;
@@ -59,9 +60,9 @@ int main(int argc, char ** argv) {
 	}
 
 	// -- Partie Affichage des couleurs differentes et leurs nombres --- 
-	printf("numero ----- r -- g -- b -- count \n");
+	printf("numero ----- r -- g -- b -- a -- count \n");
 	for(int i=0; i<taille;i++) {
-		printf("Couleur %02i : %02x - %02x - %02x - %02d\n",i,couleur_presente[i].rouge,couleur_presente[i].bleu,couleur_presente[i].vert,couleur_presente[i].count);
+		printf("Couleur %02i : %02x - %02x - %02x- %02x - %02d\n",i,couleur_presente[i].rouge,couleur_presente[i].bleu,couleur_presente[i].vert,couleur_presente[i].alpha,couleur_presente[i].count);
 		compt = compt + couleur_presente[i].count;
 
 	}
