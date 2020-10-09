@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+//Nom : sizeof.c
 //Auteurs : Philippe CHARRAT et Axel BRUYERE
 //Objectif : écrire un programme qui affiche le résultat de la fonction sizeof appliquée à différents types
 
@@ -20,4 +21,4 @@ int main() {
 }
 
 //Le type int fait 4 octets
-//Tous les autres sont des pointeurs et nous sommes sur une machine 64bits avec un système d'exploitation sur 64bits également. Tous les pointeurs font donc 8 octets
+//Tous les autres sont des pointeurs et nous sommes sur une machine 64bits avec un système d'exploitation sur 64bits également. Tous les pointeurs font donc 8 octetste

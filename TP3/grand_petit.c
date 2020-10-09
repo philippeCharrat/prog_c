@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Nom : grand_petit.c
 //Auteurs : Philippe CHARRAT et Axel BRUYERE
 //Objectif : écrire un programme qui crée un tableau de 100 entiers et qui calcule 
 //la plus grande valeur ainsi que la plus petite 
