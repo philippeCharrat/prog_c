@@ -7,8 +7,8 @@
 /*
 	Nom : chercherfichier.c
 	Auteurs : Philippe CHARRAT et Axel BRUYERE 
-Objectif : Ce code va chercher 
-
+	Objectif : Ce code va chercher une séquence de caractères saisie par l'utilisateurs dans un texte définie. Pour faciliter le lien entre une itération d'un mot et sa ligne, une structure a été mise en place. Mais elle n'est pas nécessaire et à juste vocation à nous entrainer.
+ 	Remarque : le texte est issue du livre "Harry Potter à l'école des Sorciers" et vous pouvez choisir des mots tel que Harry ou balais.
 */
 
 int main(void){

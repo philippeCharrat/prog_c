@@ -2,26 +2,28 @@
 #include <string.h>
 
 /*
-    Nom : couleur.c
+    Nom : liste.h
     Auteur : CHARRAT Philippe & BRUYERE Axel 
-    Objectif : Ce code va établir une structure couleur qui attend 5 paramètres à savoir 4 caractères qui définissent la couche RGBa en hexadécimale et un tableau de caractère pour le nom de la couleur. Une boucle for est utilisé pour afficher toutes les couleurs initialisées.
-    Remarque : le tableau contenant toutes les couleurs a été initialisé à la mains mais on aurais pu l'automatiser en générant aléatoirement les couches RGBa mais pour cela, il faut modifier la structure en enlevant le nom.
-    Remarque2 : Nous avons utilisé l'ANSI Escape code pour ajouter des couleurs mais il peut ne pas être compatible avec tous les distributions.
+    Objectif : Le code  va établir les deux structures nécessaires pour le code liste.c, et pré-définir les deux fonctions à dévelloppées par la suite. 
 */
 
-   	//-- Initialisations de la structure  --
-struct liste_couleur{
+//-- Initialisations des structures  --
+struct couleur{
+        unsigned char rouge;
+        unsigned char bleu;
+        unsigned char vert;
+        unsigned char alpha;
+};
+
+struct liste_couleurs{
 	unsigned char rouge;
 	unsigned char bleu;
 	unsigned char vert;
 	unsigned char alpha;
-	struct couleur *next;
-};
-	
-void insertion(struct liste_couleur*,struct couleur) {
-	*liste_couleur.rouge = couleur.rouge;
-	*liste_couleur.vert = couleur.vert;
-	*liste_couleur.bleu = couleur.bleu;
-	*liste_couleur.next = &(liste_couleur+sizeof(*liste_couleur));
+	struct liste_couleurs *next;
 };
 
+// Initialisaton des foncions ---
+void insertion(struct liste_couleurs*,struct couleur);
+
+void affichage(struct liste_couleurs*);
