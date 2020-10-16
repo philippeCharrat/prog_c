@@ -15,4 +15,5 @@
 # Commentaires :
    Chaque code est commenté.
    Pour le nom des variables, nous avons utilisé des '_' entre chaque mot. Exemple : char un_exemple;
+   Pour le deuxième exercice, nous avons écrit les fonctions de lecture et d'écriture dans notre fichier.c. Cela n'a pas rééllement d'utilité dans notre cas, étant donné la taille de notre code. Nous avons tout de même écrit le nom de nos méthodes dans le fichier fichier.h, afin de pouvoir les appeler à l'avenir dans d'autres programmes. Nous ne les avons pas directement appelées dans l'exercice 4.3 parce que nos besoin n'étaient pas exactement les mêmes, mais nous aurions pu les y adapter.
  
