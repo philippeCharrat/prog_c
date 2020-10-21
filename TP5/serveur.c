@@ -18,12 +18,18 @@
 
 int operation(op,a,b) {
 	int c;
+	int aint = a - '0';
+	int bint = b - '0';
+	int i = 0;
+	int somme = 0;
+	
 	switch(op) {
-		case '+' :c = a+b;break;
-		case '-' :c = a-b;break;
-		case '*' :c = a*b;break;
-		case '/' :c = a/b;break;
+		case '+' :c = aint+bint;break;
+		case '-' :c = aint-bint;break;
+		case '*' :c = aint*bint;break;
+		case '/' :c = aint/bint;break;
 	}
+
 	return c;
 }
 
@@ -83,21 +89,30 @@ int recois_envoie_message(int socketfd) {
   	renvoie_message(client_socket_fd,message);
   } else if (strcmp(code, "calcul:") == 0) {
     	//renvoie_message(client_socket_fd, data);
+	
 	char op; 
-	int a,b,c;
-  	for(int i = 0; i < 1000; i++) {
-		if( data[i] == '+' || data[i] == '-' || data[i] == '*' || data[i] == '/') {
-			op = data[i]; 
-			a = data[i+2];
-			b = data[i+4];
-			c = operation(op,a,b);
+	char a,b;
+	char * ptr_data = &data;
+  	for(int i = 0; i < 100; i++) {
+		if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/') {
+			op = *ptr_data; 
+			ptr_data = ptr_data+2;
+			a =*ptr_data;
+			ptr_data = ptr_data+2;
+			b = *ptr_data; 
+			printf("%c - %c - %c \n",a,b,op);
+		} else if ('\0' == *ptr_data ) {
 			break;
 		}
+		ptr_data = ptr_data+1;
 	}
+	int result = operation(op,a,b);
+	char c = result + '0';
+	printf("resultat : %d \n",result);
 	char message[100];
-	strcpy(message,"Le resultat est : ");
-	strcpy(message,itoa(c));
-  	renvoie_message(client_socket_fd,message);
+	strcpy(message,"Le resultat est :  ");
+	message[17] = c;	
+	renvoie_message(client_socket_fd,message);
   }
 
   //fermer le socket 
