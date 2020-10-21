@@ -18,63 +18,41 @@
 
 int operation(char op,int a,int b) {
 	int c;
+	int i = 0;
+	int somme = 0;
+	
 	switch(op) {
 		case '+' :c = a+b;break;
 		case '-' :c = a-b;break;
 		case '*' :c = a*b;break;
 		case '/' :c = a/b;break;
 	}
+
 	return c;
 }
-
-double operationf(char op,double a,double b) {
-	double c;
-	switch(op) {
-		case '+' :c = a+b;break;
-		case '-' :c = a-b;break;
-		case '*' :c = a*b;break;
-		case '/' :c = a/b;break;
-	}
-	return c;
-}
-
-int recois_numero_calcule(char* data,char* buffer) {
-  char op; 
-  char atemp[10];
-  char btemp[10];
+int recois_numero_calcule(char* data) {
+    char op; 
+  int a = 0;
+  int atemp = 0;
+  int b =0;
+  int btemp = 0;
   char * ptr_data = &(data[0]);
   ptr_data += 8;
-  int a = 0;
-  int b = 0; 
-  double af = 0;
-  double bf = 0;
-  int j = 0;
-  int fa = 0;
-  int fb = 0; 
   for(int i = 1; i < 100; i++) {  
     if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/') {
       op = *ptr_data;
       ptr_data += 1;
-    } else if (a == 0 && af == 0) {
+    } else if (a == 0 ) {
       if (*ptr_data == ' ') {
-        
-        if (fa == 0) {  a = atoi(atemp);}
-	else { af = atof(atemp);}
-	j = 0;
+        a = atemp + 0;
       } else {
-        atemp[j] = *ptr_data; 
-	j += 1;
-	if (*ptr_data == '.') { fa = 1;}
+        atemp = atemp*10 + (int)(*ptr_data - '0');
       }
-    } else if (b == 0 && bf == 0) {
+    } else if (b == 0) {
       if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
-        if (fb == 0) { b = atoi(btemp);}
-	else { bf = atof(btemp);}
-
+        b = btemp + 0;
       } else {
-        btemp[j] = *ptr_data;
-	j += 1;	
-	if (*ptr_data == '.') { fb = 1;}
+        btemp = btemp*10 + (int)(*ptr_data - '0');
       }
     }
   
@@ -83,28 +61,8 @@ int recois_numero_calcule(char* data,char* buffer) {
       break;
     }
   }
-
-  if( fa == 0 && fb == 0) {
-  	int result = operation(op,a,b);
-	sprintf(buffer,"%d",result);
-	
-  }else if( fa == 0 || fb == 1) {
-	af = (double) a;
-  	double result = operationf(op,af,bf);
-	sprintf(buffer,"%f",result);
-	
-  }else if( fa == 1 || fb == 0) {
-  	bf = (double) b;
-  	double result = operationf(op,af,  bf);
-	sprintf(buffer,"%f",result);
-	
-  }
-
-  else {
-	double result = operationf(op,af,bf);
-	sprintf(buffer,"%f",result);
-  }
-  return 0;
+  int result = operation(op,a,b);
+  return result;
 }
 
 /* renvoyer un message (*data) au client (client_socket_fd)
@@ -163,9 +121,11 @@ int recois_envoie_message(int socketfd) {
   	renvoie_message(client_socket_fd,message);
   } else if (strcmp(code, "calcul:") == 0) {
     	//renvoie_message(client_socket_fd, data);
-	char buffer[30];
-	int temp = recois_numero_calcule(data,buffer);
-	printf("Le buffer vaut : %s",buffer);
+	
+  	int result = recois_numero_calcule(data);
+	char buffer[10];
+	sprintf(buffer,"%d",result);
+	printf("%d - %s\n",result, buffer);	
 	char message[100];
 	strcpy(message, "Le resultat est :");
 	strcat(message,buffer);	
