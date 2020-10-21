@@ -16,6 +16,40 @@
 
 #include "serveur.h"
 
+int recois_numero_calcule(char data) {
+    char op; 
+  int a = 0;
+  int atemp = 0;
+  int b =0;
+  int btemp = 0;
+  char * ptr_data = &(data[0]);
+  ptr_data += 8;
+  for(int i = 1; i < 100; i++) {  
+    if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/') {
+      op = *ptr_data;
+      ptr_data += 1;
+    } else if (a == 0 ) {
+      if (*ptr_data == ' ') {
+        a = atemp + 0;
+      } else {
+        atemp = atemp*10 + (int)(*ptr_data - '0');
+      }
+    } else if (b == 0) {
+      if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
+        b = btemp + 0;
+      } else {
+        btemp = btemp*10 + (int)(*ptr_data - '0');
+      }
+    }
+  
+    ptr_data = ptr_data+1;
+    if(*ptr_data == '\0') {
+      break;
+    }
+  }
+  int result = operation(op,a,b);
+  return result
+}
 int operation(char op,int a,int b) {
 	int c;
 	int i = 0;
@@ -88,42 +122,11 @@ int recois_envoie_message(int socketfd) {
   } else if (strcmp(code, "calcul:") == 0) {
     	//renvoie_message(client_socket_fd, data);
 	
-	char op; 
-	int a = 0;
-	int atemp = 0;
-	int b =0;
-	int btemp = 0;
-	char * ptr_data = &(data[0]);
-	ptr_data += 8;
-	for(int i = 1; i < 100; i++) { 	
-		if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/') {
-			op = *ptr_data;
-			ptr_data += 1;
-		} else if (a == 0 ) {
-			if (*ptr_data == ' ') {
-				a = atemp + 0;
-			} else {
-				atemp = atemp*10 + (int)(*ptr_data - '0');
-			}
-		} else if (b == 0) {
-			if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
-				b = btemp + 0;
-			} else {
-				btemp = btemp*10 + (int)(*ptr_data - '0');
-			}
-		}
-	
-		ptr_data = ptr_data+1;
-		if(*ptr_data == '\0') {
-			break;
-		}
-	}
-	int result = operation(op,a,b);
+  result = recois_numero_calcule(data);
 	char buffer[30];
 	sprintf(buffer,"%d",result);
 	printf("%d - %s\n",result, buffer);	
 	char message[100];
-	strcpy(message,"Le resultat est :  ");
 	strcat(message,buffer);	
 	renvoie_message(client_socket_fd,message);
   }
