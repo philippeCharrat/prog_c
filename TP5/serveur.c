@@ -16,18 +16,16 @@
 
 #include "serveur.h"
 
-int operation(op,a,b) {
+int operation(char op,int a,int b) {
 	int c;
-	int aint = a - '0';
-	int bint = b - '0';
 	int i = 0;
 	int somme = 0;
 	
 	switch(op) {
-		case '+' :c = aint+bint;break;
-		case '-' :c = aint-bint;break;
-		case '*' :c = aint*bint;break;
-		case '/' :c = aint/bint;break;
+		case '+' :c = a+b;break;
+		case '-' :c = a-b;break;
+		case '*' :c = a*b;break;
+		case '/' :c = a/b;break;
 	}
 
 	return c;
@@ -91,27 +89,42 @@ int recois_envoie_message(int socketfd) {
     	//renvoie_message(client_socket_fd, data);
 	
 	char op; 
-	char a,b;
-	char * ptr_data = &data;
-  	for(int i = 0; i < 100; i++) {
+	int a = 0;
+	int atemp = 0;
+	int b =0;
+	int btemp = 0;
+	char * ptr_data = &(data[0]);
+	ptr_data += 8;
+	for(int i = 1; i < 100; i++) { 	
 		if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/') {
-			op = *ptr_data; 
-			ptr_data = ptr_data+2;
-			a =*ptr_data;
-			ptr_data = ptr_data+2;
-			b = *ptr_data; 
-			printf("%c - %c - %c \n",a,b,op);
-		} else if ('\0' == *ptr_data ) {
+			op = *ptr_data;
+			ptr_data += 1;
+		} else if (a == 0 ) {
+			if (*ptr_data == ' ') {
+				a = atemp + 0;
+			} else {
+				atemp = atemp*10 + (int)(*ptr_data - '0');
+			}
+		} else if (b == 0) {
+			if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
+				b = btemp + 0;
+			} else {
+				btemp = btemp*10 + (int)(*ptr_data - '0');
+			}
+		}
+	
+		ptr_data = ptr_data+1;
+		if(*ptr_data == '\0') {
 			break;
 		}
-		ptr_data = ptr_data+1;
 	}
 	int result = operation(op,a,b);
-	char c = result + '0';
-	printf("resultat : %d \n",result);
+	char buffer[30];
+	sprintf(buffer,"%d",result);
+	printf("%d - %s\n",result, buffer);	
 	char message[100];
 	strcpy(message,"Le resultat est :  ");
-	message[17] = c;	
+	strcat(message,buffer);	
 	renvoie_message(client_socket_fd,message);
   }
 
