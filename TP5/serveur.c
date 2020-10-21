@@ -29,9 +29,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
 #include "serveur.h"
 
+int lire_fichier(char*nom_de_fichier){
+    int fichier;
+    int size;
+    char message;
+    fichier = open(nom_de_fichier,O_RDONLY);    
+    while (1){
+        size = read(fichier,&message,1);
+        if(size<1){
+            break;
+        }
+        printf("%c \n", message);
+    }
+    close(fichier);
+    return(0);
+}
 // Fonction qui va traiter l'opération pour des entiers 
 int operation(char op,int a,int b) {
 	int c;
@@ -163,7 +177,9 @@ int recois_numero_calcule(char* data,char* buffer) {
   }
   }
   else {
-
+      if (a < 6) {
+        lire_fichier("etudiant/1/note1.txt");
+      }
   }
 
   // Retourne 0 si bonne exécution de la fonction
