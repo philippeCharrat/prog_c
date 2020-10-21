@@ -48,7 +48,7 @@ int recois_numero_calcule(char data) {
     }
   }
   int result = operation(op,a,b);
-  return result
+  return result;
 }
 int operation(char op,int a,int b) {
 	int c;
