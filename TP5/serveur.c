@@ -136,12 +136,12 @@ int recois_numero_calcule(char* data,char* buffer) {
 	
   }
   // Cas 2 et 3 : a ou b est un float. 
-  else if( fa == 0 || fb == 1) {
+  else if( fa == 0 && fb == 1) {
 	af = (double) a;
   	double result = operationf(op,af,bf);
 	sprintf(buffer,"%f",result);
 	
-  }else if( fa == 1 || fb == 0) {
+  }else if( fa == 1 && fb == 0) {
   	bf = (double) b;
   	double result = operationf(op,af,  bf);
 	sprintf(buffer,"%f",result);
