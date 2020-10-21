@@ -2,8 +2,24 @@
  * SPDX-FileCopyrightText: 2020 John Samuel
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
- *
+ * 
  */
+/*
+    Nom : serveur.c
+    Auteur : John Samuel & CHARRAT Philippe & BRUYERE Axel 
+    Objectif : Ce code va simuler un serveur qui peut recevoir et émettre des messages.
+    Disclamer : Une grande partie du code a été rédiger par Mr. SAMUEL, nous n'avons qu'implémanté de petite feature, tel qu'une fonction de calcul ou de nouveau message.
+    Lien utiles : 
+        - nous avons rencontrée des difficultés à récuperer les nombre car on obtenais des valeurs abérentes, exemple: '0'-> 48. Cela était du au fait que l'on récupéré le code ASCI dont voici une table : http://www.asciitable.com/
+        - Pour convertir des chars en floats, nous avons utilisé la fonction atof à l'aide du site : https://koor.fr/C/cstdlib/atof.wp
+        - Pour convertir des chars en int, nous avons utilisé la fonction atoi à l'aide du site : https://koor.fr/C/cstdlib/atoi.wp
+        - Pour convertir des ints en floats, on a utilisé la solution proposé sur : https://www.tutorialspoint.com/cprogramming/c_type_casting.htm
+        - Nous avons choisis la solution d'un return void pour la fonction de calcul suite à des problèmes de variables locales : https://overiq.com/c-programming-101/local-global-and-static-variables-in-c/
+        - La boucle pour récuperer les floats ou ints depuis un char[] est librement inspirés de la solution :https://stackoverflow.com/questions/11841782/how-can-i-assign-float-value-to-char-c-array
+
+
+*/
+// Foncion ajout d'un élément dans la liste chainée directement inspiré de la slide 46 du cours 3.
 
 #include <sys/types.h> 
 #include <sys/socket.h>
@@ -16,79 +32,111 @@
 
 #include "serveur.h"
 
+// Fonction qui va traiter l'opération pour des entiers 
 int operation(char op,int a,int b) {
 	int c;
+  // Un switch qui contient les cas possibles
 	switch(op) {
 		case '+' :c = a+b;break;
 		case '-' :c = a-b;break;
 		case '*' :c = a*b;break;
 		case '/' :c = a/b;break;
 	}
+  // Retours d'un entié C
 	return c;
 }
 
+// Fonction qui va traiter l'opération pour des floats 
 double operationf(char op,double a,double b) {
 	double c;
+  // Switch avec les 4 cas possibles
 	switch(op) {
 		case '+' :c = a+b;break;
 		case '-' :c = a-b;break;
 		case '*' :c = a*b;break;
 		case '/' :c = a/b;break;
 	}
+  // Retours d'un float c
 	return c;
 }
 
+// Fonction pour la partie : réalisation d'un calcul à partir de saisies utilisateurs. 
+// Inputs : 
+// - data : tableau contenant le messages de l'utilisateurs 
+// - buffer : tableau vide pour récuperer le résultat de l'opération.
+// Outputs : 
+// - int : 0, cette fonction ne nécessite aucun retour particulié.
 int recois_numero_calcule(char* data,char* buffer) {
+  // Initialisations des variables utiles ---
   char op; 
   char atemp[10];
   char btemp[10];
-  char * ptr_data = &(data[0]);
-  ptr_data += 8;
   int a = 0;
-  int b = 0; 
-  double af = 0;
-  double bf = 0;
+  int b = 0;
   int j = 0;
   int fa = 0;
   int fb = 0; 
+  double af = 0;
+  double bf = 0;
+ 
+  // Initialisations d'un pointeur sur le message utilisateurs tronqué des 8 premiers caractère ('calcul : '')
+  char * ptr_data = &(data[0]);
+  ptr_data += 8;
+  
+  // Partie : Récupération des paramètres utilisateurs 
   for(int i = 1; i < 100; i++) {  
+    // Récupération de l'opération attendue
     if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/') {
       op = *ptr_data;
       ptr_data += 1;
-    } else if (a == 0 && af == 0) {
-      if (*ptr_data == ' ') {
-        
-        if (fa == 0) {  a = atoi(atemp);}
-	else { af = atof(atemp);}
-	j = 0;
-      } else {
+    } 
+    // Partie Initialisation de la valeur a 
+    else if (a == 0 && af == 0) {
+
+      // Cas 1 : la valeur est finie (présence d'un espace), convertions de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
+      if (*ptr_data == ' ') {  
+         if (fa == 0) {  a = atoi(atemp);}
+	       else { af = atof(atemp);}
+	       j = 0;
+      } 
+      // Cas 2 : la valeur continue donc on continue le tableau et l'on test la présence du caractère '.'.      
+      else {
         atemp[j] = *ptr_data; 
-	j += 1;
-	if (*ptr_data == '.') { fa = 1;}
+	      j += 1;
+      	if (*ptr_data == '.') { fa = 1;}
       }
-    } else if (b == 0 && bf == 0) {
+    }
+    // Partie Initialisation de la valeur b
+    else if (b == 0 && bf == 0) {
+      // Cas 1 : la valeur est finie (présence d'un espace), convertions de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
       if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
         if (fb == 0) { b = atoi(btemp);}
-	else { bf = atof(btemp);}
-
-      } else {
+        else { bf = atof(btemp);}
+      }
+      // Cas 2 : la valeur continue donc on continue le tableau et l'on test la présence du caractère '.'.      
+      else {
         btemp[j] = *ptr_data;
-	j += 1;	
-	if (*ptr_data == '.') { fb = 1;}
+      	j += 1;	
+      	if (*ptr_data == '.') { fb = 1;}
       }
     }
   
+    // On incrémente de 1 le pointeur et au besoin, on sort de la boucle.
     ptr_data = ptr_data+1;
     if(*ptr_data == '\0') {
       break;
     }
   }
 
+  // Pour réaliser, l'opérations il y a 4 cas possibles : 
+  // Cas 1 : Les deux valeurs sont des ints
   if( fa == 0 && fb == 0) {
   	int result = operation(op,a,b);
-	sprintf(buffer,"%d",result);
+    sprintf(buffer,"%d",result);
 	
-  }else if( fa == 0 || fb == 1) {
+  }
+  // Cas 2 et 3 : a ou b est un float. 
+  else if( fa == 0 || fb == 1) {
 	af = (double) a;
   	double result = operationf(op,af,bf);
 	sprintf(buffer,"%f",result);
@@ -99,11 +147,13 @@ int recois_numero_calcule(char* data,char* buffer) {
 	sprintf(buffer,"%f",result);
 	
   }
-
+  // Cas 4 : les deux valeurs sont des floats.         
   else {
 	double result = operationf(op,af,bf);
 	sprintf(buffer,"%f",result);
   }
+
+  // Retourne 0 si bonne exécution de la fonction
   return 0;
 }
 
@@ -153,23 +203,30 @@ int recois_envoie_message(int socketfd) {
   printf ("Message recu: %s\n", data);
   char code[10];
   sscanf(data, "%s:", code);
+  // Deux cas possibles : 
 
-  //Si le message commence par le mot: 'message:' 
+  //Cas 1 : Si le message commence par le mot: 'message:', alors le serveur doit saisir et renvoyer un message vers le client.  
   if (strcmp(code, "message:") == 0) {
-    	//renvoie_message(client_socket_fd, data);
+    // Initialisations des variables utiles ---
   	char message[1024];
-  	printf("Renvoyez un nouveau message : ");
+    // Récupération du nouveau message ---
+  	printf("saisir un nouveau message : ");
   	fgets(message,1024,stdin);
+    // Envoie du nouveau message --- 
   	renvoie_message(client_socket_fd,message);
-  } else if (strcmp(code, "calcul:") == 0) {
-    	//renvoie_message(client_socket_fd, data);
-	char buffer[30];
-	int temp = recois_numero_calcule(data,buffer);
-	printf("Le buffer vaut : %s",buffer);
-	char message[100];
-	strcpy(message, "Le resultat est :");
-	strcat(message,buffer);	
-	renvoie_message(client_socket_fd,message);
+  } 
+  //Cas 2 : Si le message commence par le mot: 'calcul:', alors le serveur renvoye le résultat vers le client.  
+  else if (strcmp(code, "calcul:") == 0) {
+    // Initialisations des variables utiles ---
+    char buffer[30];
+    char message[100];
+    // Calcul du résultat ---
+  	int temp = recois_numero_calcule(data,buffer);
+    // Création de la chaine à retourner ---
+  	strcpy(message, "Le résultat est :");
+  	strcat(message,buffer);	
+    // Envoie du résultat
+  	renvoie_message(client_socket_fd,message);
   }
 
   //fermer le socket 
