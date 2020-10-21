@@ -23,28 +23,38 @@
 
 #include <sys/types.h> 
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <sys/epoll.h>
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include "serveur.h"
 
-int lire_fichier(char*nom_de_fichier){
+int lire_fichier(char *nom_de_fichier){
     int fichier;
+    char carac;
+    char tempchar[3];
+    int cmpt = 0;
     int size;
-    char message;
-    fichier = open(nom_de_fichier,O_RDONLY);    
-    while (1){
-        size = read(fichier,&message,1);
-        if(size<1){
-            break;
-        }
-        printf("%c \n", message);
+    fichier = open(nom_de_fichier,O_RDONLY);
+    if (fichier != 0) {
+	    while (1) {
+		    size = read(fichier,&carac,1);
+		    if(size<1) { break;}
+		    if(carac != 10) {
+			    tempchar[cmpt] = carac;
+			    cmpt += 1;
+		    }
+	    }
+	    cmpt = atoi(tempchar);
+	    printf("%s ",&tempchar);
+	    printf("%d - ",cmpt);
     }
     close(fichier);
-    return(0);
+    return(cmpt);
 }
 // Fonction qui va traiter l'opération pour des entiers 
 int operation(char op,int a,int b) {
@@ -92,8 +102,7 @@ int recois_numero_calcule(char* data,char* buffer) {
   int fb = 0;
   int mode = 0; 
   double af = 0;
-  double bf = 0;
- 
+  double bf = 0; 
   // Initialisations d'un pointeur sur le message utilisateurs tronqué des 8 premiers caractère ('calcul : '')
   char * ptr_data = &(data[0]);
   ptr_data += 8;
@@ -101,11 +110,9 @@ int recois_numero_calcule(char* data,char* buffer) {
 	  if (data[g] == ' ') {
 		  mode += 1;
 	  } else if (data[g] == '\0') {
-		  printf("%d",mode);
 		  break;
 	  }
   }
-
   // Partie : Récupération des paramètres utilisateurs 
   for(int i = 1; i < 100; i++) {  
     // Récupération de l'opération attendue
@@ -117,10 +124,11 @@ int recois_numero_calcule(char* data,char* buffer) {
     else if (a == 0 && af == 0) {
 
       // Cas 1 : la valeur est finie (présence d'un espace), convertions de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
-      if (*ptr_data == ' ') {  
+      if (*ptr_data == ' ' || *ptr_data == 10) {  
          if (fa == 0) {  a = atoi(atemp);}
 	       else { af = atof(atemp);}
 	       j = 0;
+	       if( mode != 3) { break; }
       } 
       // Cas 2 : la valeur continue donc on continue le tableau et l'on test la présence du caractère '.'.      
       else {
@@ -178,7 +186,18 @@ int recois_numero_calcule(char* data,char* buffer) {
   }
   else {
       if (a < 6) {
-        lire_fichier("etudiant/1/note1.txt");
+	char lien[100];
+	strcpy(lien, "etudiant/");
+	char lien_a = a + '0';
+	lien[strlen(lien)] = lien_a;
+	strcat(lien,"/note");
+	lien[strlen(lien)] = lien_a;
+	strcat(lien,".txt");
+	int moyenne = 0;
+
+        int noten = lire_fichier(lien);
+      	moyenne = moyenne + noten;
+        printf(" Moyenne : %d",moyenne);
       }
   }
 
