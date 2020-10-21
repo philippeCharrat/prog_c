@@ -75,14 +75,23 @@ int recois_numero_calcule(char* data,char* buffer) {
   int b = 0;
   int j = 0;
   int fa = 0;
-  int fb = 0; 
+  int fb = 0;
+  int mode = 0; 
   double af = 0;
   double bf = 0;
  
   // Initialisations d'un pointeur sur le message utilisateurs tronqué des 8 premiers caractère ('calcul : '')
   char * ptr_data = &(data[0]);
   ptr_data += 8;
-  
+  for(int g = 0; g < 100; g++) {
+	  if (data[g] == ' ') {
+		  mode += 1;
+	  } else if (data[g] == '\0') {
+		  printf("%d",mode);
+		  break;
+	  }
+  }
+
   // Partie : Récupération des paramètres utilisateurs 
   for(int i = 1; i < 100; i++) {  
     // Récupération de l'opération attendue
@@ -107,7 +116,7 @@ int recois_numero_calcule(char* data,char* buffer) {
       }
     }
     // Partie Initialisation de la valeur b
-    else if (b == 0 && bf == 0) {
+    else if (b == 0 && bf == 0 && mode==3) {
       // Cas 1 : la valeur est finie (présence d'un espace), convertions de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
       if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
         if (fb == 0) { b = atoi(btemp);}
@@ -127,7 +136,7 @@ int recois_numero_calcule(char* data,char* buffer) {
       break;
     }
   }
-
+  if (mode == 3) {
   // Pour réaliser, l'opérations il y a 4 cas possibles : 
   // Cas 1 : Les deux valeurs sont des ints
   if( fa == 0 && fb == 0) {
@@ -151,6 +160,10 @@ int recois_numero_calcule(char* data,char* buffer) {
   else {
 	double result = operationf(op,af,bf);
 	sprintf(buffer,"%f",result);
+  }
+  }
+  else {
+
   }
 
   // Retourne 0 si bonne exécution de la fonction
