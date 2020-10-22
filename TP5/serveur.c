@@ -16,10 +16,8 @@
         - Pour convertir des ints en floats, on a utilisé la solution proposé sur : https://www.tutorialspoint.com/cprogramming/c_type_casting.htm
         - Nous avons choisis la solution d'un return void pour la fonction de calcul suite à des problèmes de variables locales : https://overiq.com/c-programming-101/local-global-and-static-variables-in-c/
         - La boucle pour récuperer les floats ou ints depuis un char[] est librement inspirés de la solution :https://stackoverflow.com/questions/11841782/how-can-i-assign-float-value-to-char-c-array
-
-
+        - Fonction lire_fichier librement inspirée de : https://openclassrooms.com/fr/courses/19980-apprenez-a-programmer-en-c/16421-lire-et-ecrire-dans-des-fichiers
 */
-// Foncion ajout d'un élément dans la liste chainée directement inspiré de la slide 46 du cours 3.
 
 #include <sys/types.h> 
 #include <sys/socket.h>
@@ -33,16 +31,21 @@
 #include <fcntl.h>
 #include "serveur.h"
 
+// Fonction pour ouvrir et récuperer les chiffres d'un fichier 
 int lire_fichier(char *nom_de_fichier){
+    // Initialisations des variables utiles ---
     int fichier;
     char carac;
     char tempchar[3];
     int cmpt = 0;
     int size;
+
+    // Partie ouverture, parcours et cloture du fichier ---
     fichier = open(nom_de_fichier,O_RDONLY);
     if (fichier != 0) {
 	    while (1) {
 		    size = read(fichier,&carac,1);
+        // Si le fichier est finie alors on sort de la boucle
 		    if(size<1) { break;}
 		    if(carac != 10) {
 			    tempchar[cmpt] = carac;
@@ -52,8 +55,11 @@ int lire_fichier(char *nom_de_fichier){
 	    cmpt = atoi(tempchar);
     }
     close(fichier);
+
+    // Retous du int contenu dans le fichier
     return(cmpt);
 }
+
 // Fonction qui va traiter l'opération pour des entiers 
 int operation(char op,int a,int b) {
 	int c;
@@ -82,7 +88,7 @@ double operationf(char op,double a,double b) {
 	return c;
 }
 
-// Fonction pour la partie : réalisation d'un calcul à partir de saisies utilisateurs. 
+// Fonction pour la partie : réalisation d'un calcul à partir de saisies utilisateurs ou de la moyenne. 
 // Inputs : 
 // - data : tableau contenant le messages de l'utilisateurs 
 // - buffer : tableau vide pour récuperer le résultat de l'opération.
@@ -101,9 +107,15 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
   int mode = 0; 
   double af = 0;
   double bf = 0; 
+
   // Initialisations d'un pointeur sur le message utilisateurs tronqué des 8 premiers caractère ('calcul : '')
   char * ptr_data = &(data[0]);
   ptr_data += 8;
+
+  // Parcours une première fois de la liste pour déterminer le mode. 
+  // 2 cas possibles : 
+  //    - mode == 3 -> présence de 3 ' ' donc de B
+  //    - mode != 3 -> présence de moins de 3 ' ' donc pas de B
   for(int g = 0; g < 100; g++) {
 	  if (data[g] == ' ') {
 		  mode += 1;
@@ -111,13 +123,15 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
 		  break;
 	  }
   }
+  
   // Partie : Récupération des paramètres utilisateurs 
   for(int i = 1; i < 100; i++) {  
-    // Récupération de l'opération attendue
+    // Récupération de l'opération attendue ou de la moyenne
     if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/' || *ptr_data == 'M') {
       op = *ptr_data;
       ptr_data += 1;
     } 
+
     // Partie Initialisation de la valeur a 
     else if (a == 0 && af == 0) {
 
@@ -135,7 +149,8 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
       	if (*ptr_data == '.') { fa = 1;}
       }
     }
-    // Partie Initialisation de la valeur b
+
+    // Partie Initialisation de la valeur b si le mode est 3
     else if (b == 0 && bf == 0 && mode==3) {
       // Cas 1 : la valeur est finie (présence d'un espace), convertions de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
       if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
@@ -152,57 +167,73 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
   
     // On incrémente de 1 le pointeur et au besoin, on sort de la boucle.
     ptr_data = ptr_data+1;
-    if(*ptr_data == '\0') {
-      break;
+    if(*ptr_data == '\0') { break; }
+  }
+
+  // 2 cas possibles :
+  //  * 1 : calcul de c (int ou float) 
+  if (mode == 3) {
+    // Pour réaliser, l'opérations il y a 4 cas possibles : 
+    // Cas 1 : Les deux valeurs sont des ints
+    if( fa == 0 && fb == 0) {
+    	int result = operation(op,a,b);
+      sprintf(buffer,"%d",result);
+    }
+    // Cas 2 et 3 : a ou b est un float et on convertie l'autre en float pour faire le calcul. 
+    else if( fa == 0 && fb == 1) {
+    	af = (double) a;
+      double result = operationf(op,af,bf);
+    	sprintf(buffer,"%f",result);
+    }
+    else if( fa == 1 && fb == 0) {
+    	bf = (double) b;
+    	double result = operationf(op,af,  bf);
+      sprintf(buffer,"%f",result);
+    }
+    // Cas 4 : les deux valeurs sont des floats.         
+    else {
+  	  double result = operationf(op,af,bf);
+  	  sprintf(buffer,"%f",result);
     }
   }
-  if (mode == 3) {
-  // Pour réaliser, l'opérations il y a 4 cas possibles : 
-  // Cas 1 : Les deux valeurs sont des ints
-  if( fa == 0 && fb == 0) {
-  	int result = operation(op,a,b);
-    sprintf(buffer,"%d",result);
-	
-  }
-  // Cas 2 et 3 : a ou b est un float. 
-  else if( fa == 0 && fb == 1) {
-	af = (double) a;
-  	double result = operationf(op,af,bf);
-	sprintf(buffer,"%f",result);
-	
-  }else if( fa == 1 && fb == 0) {
-  	bf = (double) b;
-  	double result = operationf(op,af,  bf);
-	sprintf(buffer,"%f",result);
-	
-  }
-  // Cas 4 : les deux valeurs sont des floats.         
+
+  //  * 2 : calcul de la moyenne  
   else {
-	double result = operationf(op,af,bf);
-	sprintf(buffer,"%f",result);
-  }
-  }
-  else {
+
+      // Si a est une des 5 matières possibles 
       if (a < 6) {
-	char lien[100];
+        // Initialisation de variables utiles
+        char lien[100];
         double moyenne = 0;
-	char lien_a = a + '0';
-	printf("ok");
-	for (int i = 1; i<6;i++) {
-	strcpy(lien, "etudiant/");
-	lien[strlen(lien)] = lien_a;
-	strcat(lien,"/note");
-	lien[strlen(lien)] = i + '0';
-	strcat(lien,".txt");
-	int noten = lire_fichier(lien);
-      	moyenne = moyenne + noten;
-	memset(lien,0,strlen(lien));
-	}
-	moyenne =moyenne/5;
-	sprintf(buffer,"%f",moyenne);
+        char lien_a = a + '0';
+
+        // Boucle pour traiter les 5 fichiers '.txt'
+        for (int i = 1; i<6;i++) {
+          // Génération automatique des liens 
+          strcpy(lien, "etudiant/");
+          lien[strlen(lien)] = lien_a;
+          strcat(lien,"/note");
+          lien[strlen(lien)] = i + '0';
+          strcat(lien,".txt");
+
+          // Appel de la fonction pour parcourir un fichier 
+          int noten = lire_fichier(lien);
+
+
+          moyenne = moyenne + noten;
+          memset(lien,0,strlen(lien));
+        }
+        moyenne =moyenne/5;
+        sprintf(buffer,"%f",moyenne);
+      }
+      // Sinon, return 0  
+      else {
+        double moyenne = 0;
+        sprintf(buffer,"%f",moyenne);
       }
   }
   
+  // Affectation de l'opérateur 
   *opreturn = op;
   // Retourne 0 si bonne exécution de la fonction
   return 0;

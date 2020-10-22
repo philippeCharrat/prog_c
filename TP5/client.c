@@ -5,6 +5,12 @@
  *
  */
 
+/*
+    Nom : client.c
+    Auteur : John Samuel & CHARRAT Philippe & BRUYERE Axel 
+    Objectif : Ce code va simuler un client qui peut recevoir et émettre des messages.
+    Disclamer : Une grande partie du code a été rédiger par Mr. SAMUEL, nous n'avons qu'implémanté de petite feature, tel que l'ajout d'une en-tête. 
+*/
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +18,6 @@
 #include <sys/types.h>  
 #include <sys/socket.h>
 #include <netinet/in.h>
-
 #include "client.h"
 
 /* 
@@ -26,25 +31,30 @@ int envoie_recois_message(int socketfd) {
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
 
-
   // Demandez à l'utilisateur d'entrer un message
   char message[1024];
   puts("Votre message (max 1000 caracteres): ");
   fgets(message, 1024, stdin);
   int calcul = 0; 
+  
+  // Parcours du message pour chercher un opérateur et si oui ajout de l'en-tête "calcul:""
   for (int i = 0; i < 100; i ++ ) {
 	  if(message[i] == '+' || message[i] == '-' || message[i] == '*' || message[i] == '/'|| message[i] == 'M') {
   		strcpy(data, "calcul: ");
-		calcul = 1;
-		break;
+		  calcul = 1;
+		  break;
 	  }
   }
+  // Sinon ajout de l'en-tête "message :"
   if(calcul == 0) {
   	strcpy(data, "message: ");
   }
   strcat(data, message);
   
+  // Envoie du message au serveur 
   int write_status = write(socketfd, data, strlen(data));
+  
+  // Si cas d'échec, alors arrêt système
   if ( write_status < 0 ) {
     perror("erreur ecriture");
     exit(EXIT_FAILURE);
@@ -52,7 +62,6 @@ int envoie_recois_message(int socketfd) {
 
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
-
 
   // lire les données de la socket
   int read_status = read(socketfd, data, sizeof(data));
