@@ -114,7 +114,7 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
   // Partie : Récupération des paramètres utilisateurs 
   for(int i = 1; i < 100; i++) {  
     // Récupération de l'opération attendue
-    if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/' || a == 'M') {
+    if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/' || *ptr_data == 'M') {
       op = *ptr_data;
       ptr_data += 1;
     } 
@@ -202,6 +202,7 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
 	sprintf(buffer,"%f",moyenne);
       }
   }
+  
   *opreturn = op;
   // Retourne 0 si bonne exécution de la fonction
   return 0;
@@ -274,15 +275,14 @@ int recois_envoie_message(int socketfd) {
     // Calcul du résultat ---
   	int temp = recois_numero_calcule(data,buffer,opreturn);
     // Création de la chaine à retourner ---
-    printf("\n%c",opreturn[0]);
-    if(opreturn[0] != 'M') {
-  	strcpy(message, "Le résultat est :");
-  	strcat(message,buffer);
-    } else {
+    printf("\n%s",&opreturn);
+    if(opreturn[0] == 'M') {
   	strcpy(message, "La moyenne du devoir est :");
   	strcat(message,buffer);
-
-    }	    
+    } else {
+  	strcpy(message, "Le resultat est :");
+  	strcat(message,buffer);
+    }
     // Envoie du résultat
   	renvoie_message(client_socket_fd,message);
   }

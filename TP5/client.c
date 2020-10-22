@@ -28,12 +28,12 @@ int envoie_recois_message(int socketfd) {
 
 
   // Demandez à l'utilisateur d'entrer un message
-  char message[100];
+  char message[1024];
   puts("Votre message (max 1000 caracteres): ");
   fgets(message, 1024, stdin);
   int calcul = 0; 
   for (int i = 0; i < 100; i ++ ) {
-	  if(message[i] == '+' || message[i] == '-' || message[i] == '*' || message[i] == '/') {
+	  if(message[i] == '+' || message[i] == '-' || message[i] == '*' || message[i] == '/'|| message[i] == 'M') {
   		strcpy(data, "calcul: ");
 		calcul = 1;
 		break;
