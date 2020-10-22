@@ -50,8 +50,6 @@ int lire_fichier(char *nom_de_fichier){
 		    }
 	    }
 	    cmpt = atoi(tempchar);
-	    printf("%s ",&tempchar);
-	    printf("%d - ",cmpt);
     }
     close(fichier);
     return(cmpt);
@@ -90,7 +88,7 @@ double operationf(char op,double a,double b) {
 // - buffer : tableau vide pour récuperer le résultat de l'opération.
 // Outputs : 
 // - int : 0, cette fonction ne nécessite aucun retour particulié.
-int recois_numero_calcule(char* data,char* buffer) {
+int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
   // Initialisations des variables utiles ---
   char op; 
   char atemp[10];
@@ -116,7 +114,7 @@ int recois_numero_calcule(char* data,char* buffer) {
   // Partie : Récupération des paramètres utilisateurs 
   for(int i = 1; i < 100; i++) {  
     // Récupération de l'opération attendue
-    if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/') {
+    if( *ptr_data == '+' || *ptr_data == '-' || *ptr_data == '*' || *ptr_data == '/' || a == 'M') {
       op = *ptr_data;
       ptr_data += 1;
     } 
@@ -187,20 +185,24 @@ int recois_numero_calcule(char* data,char* buffer) {
   else {
       if (a < 6) {
 	char lien[100];
-	strcpy(lien, "etudiant/");
+        double moyenne = 0;
 	char lien_a = a + '0';
+	printf("ok");
+	for (int i = 1; i<6;i++) {
+	strcpy(lien, "etudiant/");
 	lien[strlen(lien)] = lien_a;
 	strcat(lien,"/note");
-	lien[strlen(lien)] = lien_a;
+	lien[strlen(lien)] = i + '0';
 	strcat(lien,".txt");
-	int moyenne = 0;
-
-        int noten = lire_fichier(lien);
+	int noten = lire_fichier(lien);
       	moyenne = moyenne + noten;
-        printf(" Moyenne : %d",moyenne);
+	memset(lien,0,strlen(lien));
+	}
+	moyenne =moyenne/5;
+	sprintf(buffer,"%f",moyenne);
       }
   }
-
+  *opreturn = op;
   // Retourne 0 si bonne exécution de la fonction
   return 0;
 }
@@ -268,11 +270,19 @@ int recois_envoie_message(int socketfd) {
     // Initialisations des variables utiles ---
     char buffer[30];
     char message[100];
+    char opreturn[1];
     // Calcul du résultat ---
-  	int temp = recois_numero_calcule(data,buffer);
+  	int temp = recois_numero_calcule(data,buffer,opreturn);
     // Création de la chaine à retourner ---
+    printf("\n%c",opreturn[0]);
+    if(opreturn[0] != 'M') {
   	strcpy(message, "Le résultat est :");
-  	strcat(message,buffer);	
+  	strcat(message,buffer);
+    } else {
+  	strcpy(message, "La moyenne du devoir est :");
+  	strcat(message,buffer);
+
+    }	    
     // Envoie du résultat
   	renvoie_message(client_socket_fd,message);
   }
