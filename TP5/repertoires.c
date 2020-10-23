@@ -86,7 +86,7 @@ void lire_dossier_rec(char *buffer,int indent) {
 
                 // Affichage du lien complet (en vert)
         		printf("\033[0;32m");
-        		printf("%s %s\n",&espace,&lien_parent);
+        		printf("%s %s\n",&(espace[0]),&(lien_parent[0]));
         		printf("\033[0m");
 
                 // Appel de la récursion
@@ -95,7 +95,7 @@ void lire_dossier_rec(char *buffer,int indent) {
             }
             // Sinon on affiche le fichier avec une indentation  
             else { 
-        		printf("%s",&espace);
+        		printf("%s",&(espace[0]));
         		printf(structure_fichier->d_name);
         		printf("\n");
             }
@@ -117,57 +117,41 @@ void lire_dossier_rec(char *buffer,int indent) {
 //  - none
 void lire_dossier_it(char *buffer,int indent) {
     // Initialisation des variables utiles 
-    DIR *dir;
+    DIR *dir; 
     struct dirent *structure_fichier;
     char espace[15];
-    char lien_parent[100];
-
-    // Ouverture du dosssier 
-    dir = opendir(buffer);
-    
-    // Création d'un niveau d'intenation esthétique
-    for(int i=0;i <= indent;i++) {
-        if (i == indent) { 
-            espace[i] = '\0';
-        } else {
-            espace[i] = '-';
-        }
-    }
-
+    char liste_doss[30][100];
+    char nomfichier[100];
+    strcpy(liste_doss[0],buffer);
+    int taille;
+    int indice = 0; 
+    int derniereindice = 1;
     // Si l'on peut ouvrir le dossiers, on le parcours
-    if(dir!=NULL) {
+    while (1) {    
+    	dir = opendir(liste_doss[indice]);
+	
+	if (dir != NULL) {
+		printf("---- %s\n",&liste_doss[indice]);		
+		structure_fichier=readdir(dir);
+		// Tant que le dossier est non-nul, on affiche les fichiers 
+        	while(structure_fichier!=NULL) {
+	    		if (structure_fichier->d_type == 4 && strcmp(structure_fichier->d_name,"..")  != 0 && strcmp(structure_fichier->d_name,".")!=0) {
+		    		memset(nomfichier,0,sizeof(nomfichier));
+	    	    		strcpy(nomfichier,&liste_doss[indice]);   
+	    	    		strcat(nomfichier,"/");
+	    	    		strcat(nomfichier,structure_fichier->d_name);   
+				strcpy(&liste_doss[derniereindice], nomfichier);
+				derniereindice += 1;
+			}  
+			printf(structure_fichier->d_name);
+            		printf("\n");
 
-        structure_fichier=readdir(dir);
-        while (structure_fichier != NULL )  {
-            // Génération du nouveau lien parents 
-            memset(lien_parent,0,sizeof(lien_parent));
-            strcpy(lien_parent,buffer);   
-            strcat(lien_parent,"/");
-
-            // Si le fichier est un directory et différent de . et .. alors on fait appel à la fonction lire_dossier
-            if (structure_fichier->d_type == 4 && strcmp(structure_fichier->d_name,"..")  != 0 && strcmp(structure_fichier->d_name,".")!=0) {
-                // Génération du lien complet
-                strcat(lien_parent,structure_fichier->d_name);
-
-                // Affichage du lien complet (en vert)
-                printf("\033[0;32m");
-                printf("%s %s --- \n",&espace,&lien_parent);
-                printf("\033[0m");
-
-                // Appel de la focntion
-                lire_dossier(lien_parent);
-                printf("---\n");
-            }
-            // Sinon on affiche le fichier avec une indentation  
-            else { 
-                printf("%s",&espace);
-                printf(structure_fichier->d_name);
-                printf("\n");
-            }
-
-            // Prochain fichier
-            structure_fichier=readdir(dir);
-        }   
+            		structure_fichier=readdir(dir);
+        	} 
+            	indice += 1;
+	} else {
+		break;
+	}
     } 
 
     // Fermeture du fichier 
@@ -181,7 +165,7 @@ int main() {
     // Saisie du lien du repertoire
     printf("Saisir un lien  : ");
     scanf("%s",&(buffer[0]));
-    printf("Les dossiers et sous dossiers de %s sont : \n",&buffer);
+    printf("Les dossiers et sous dossiers de %s sont : \n",&(buffer[0]));
 
     // Appel de la fonction lire_dosier 
     lire_dossier_it(buffer,indent);
