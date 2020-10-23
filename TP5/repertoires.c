@@ -9,7 +9,7 @@
  * 	Remarque : 
  *      - ce code est inspiré de : https://stackoverflow.com/questions/3554120/open-directory-using-c
  *      - La partie sous dossier a été inspirée de : https://stackoverflow.com/questions/8436841/how-to-recursively-list-directories-in-c-on-linux
- *      - Focntion opendir : http://manpagesfr.free.fr/man/man3/opendir.3.html
+ *      - Focntion
  */
 
 // Fonction affichage des dossiers :
@@ -50,7 +50,7 @@ void lire_dossier(char * buffer) {
 //  - int pour l'affichage 
 // Outputs : 
 //  - none
-void lire_dossier_it(char *buffer,int indent) {
+void lire_dossier_rec(char *buffer,int indent) {
     // Initialisation des variables utiles 
     DIR *dir;
     struct dirent *structure_fichier;
@@ -90,7 +90,7 @@ void lire_dossier_it(char *buffer,int indent) {
         		printf("\033[0m");
 
                 // Appel de la récursion
-                lire_dossier(lien_parent,indent+3);
+                lire_dossier_rec(lien_parent,indent+3);
                 printf("\n");
             }
             // Sinon on affiche le fichier avec une indentation  
@@ -109,7 +109,70 @@ void lire_dossier_it(char *buffer,int indent) {
     closedir(dir);
 }
 
+// Fonction affichage des dossiers et sous dossiers  :
+// Inputs : 
+//  - ptr vers le lien du dossier a afficher
+//  - int pour l'affichage 
+// Outputs : 
+//  - none
+void lire_dossier_it(char *buffer,int indent) {
+    // Initialisation des variables utiles 
+    DIR *dir;
+    struct dirent *structure_fichier;
+    char espace[15];
+    char lien_parent[100];
 
+    // Ouverture du dosssier 
+    dir = opendir(buffer);
+    
+    // Création d'un niveau d'intenation esthétique
+    for(int i=0;i <= indent;i++) {
+        if (i == indent) { 
+            espace[i] = '\0';
+        } else {
+            espace[i] = '-';
+        }
+    }
+
+    // Si l'on peut ouvrir le dossiers, on le parcours
+    if(dir!=NULL) {
+
+        structure_fichier=readdir(dir);
+        while (structure_fichier != NULL )  {
+            // Génération du nouveau lien parents 
+            memset(lien_parent,0,sizeof(lien_parent));
+            strcpy(lien_parent,buffer);   
+            strcat(lien_parent,"/");
+
+            // Si le fichier est un directory et différent de . et .. alors on fait appel à la fonction lire_dossier
+            if (structure_fichier->d_type == 4 && strcmp(structure_fichier->d_name,"..")  != 0 && strcmp(structure_fichier->d_name,".")!=0) {
+                // Génération du lien complet
+                strcat(lien_parent,structure_fichier->d_name);
+
+                // Affichage du lien complet (en vert)
+                printf("\033[0;32m");
+                printf("%s %s --- \n",&espace,&lien_parent);
+                printf("\033[0m");
+
+                // Appel de la focntion
+                lire_dossier(lien_parent,indent+3);
+                printf("---\n");
+            }
+            // Sinon on affiche le fichier avec une indentation  
+            else { 
+                printf("%s",&espace);
+                printf(structure_fichier->d_name);
+                printf("\n");
+            }
+
+            // Prochain fichier
+            structure_fichier=readdir(dir);
+        }   
+    } 
+
+    // Fermeture du fichier 
+    closedir(dir);
+}
 int main() {
     // Initialisations des variables utiles 	
     char buffer[50];
