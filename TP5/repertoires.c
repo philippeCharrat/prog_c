@@ -155,7 +155,7 @@ void lire_dossier_it(char *buffer,int indent) {
                 printf("\033[0m");
 
                 // Appel de la focntion
-                lire_dossier(lien_parent,indent+3);
+                lire_dossier(lien_parent);
                 printf("---\n");
             }
             // Sinon on affiche le fichier avec une indentation  
@@ -184,7 +184,7 @@ int main() {
     printf("Les dossiers et sous dossiers de %s sont : \n",&buffer);
 
     // Appel de la fonction lire_dosier 
-    lire_dossier_rec(buffer,indent);
+    lire_dossier_it(buffer,indent);
 
     return(0);
 }   
