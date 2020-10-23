@@ -173,13 +173,17 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
   // 2 cas possibles :
   //  * 1 : calcul de c (int ou float) 
   if (mode == 3) {
-    // Pour réaliser, l'opérations il y a 4 cas possibles : 
-    // Cas 1 : Les deux valeurs sont des ints
-    if( fa == 0 && fb == 0) {
+    // Pour réaliser, l'opérations il y a 5 cas possibles : 
+    // Cas 1 : Si b est zéro et que l'on veut diviser par 0  
+    if ( b == 0 && bf == 0.0 && op == '/') {
+	    op = 'd';
+    }
+    // Cas 2 : Les deux valeurs sont des ints
+    else if( fa == 0 && fb == 0) {
     	int result = operation(op,a,b);
       sprintf(buffer,"%d",result);
     }
-    // Cas 2 et 3 : a ou b est un float et on convertit l'autre en float pour faire le calcul. 
+    // Cas 3 et 4 : a ou b est un float et on convertit l'autre en float pour faire le calcul. 
     else if( fa == 0 && fb == 1) {
     	af = (double) a;
       double result = operationf(op,af,bf);
@@ -190,7 +194,7 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
     	double result = operationf(op,af,  bf);
       sprintf(buffer,"%f",result);
     }
-    // Cas 4 : les deux valeurs sont des floats.         
+    // Cas 5 : les deux valeurs sont des floats.         
     else {
   	  double result = operationf(op,af,bf);
   	  sprintf(buffer,"%f",result);
@@ -310,8 +314,10 @@ int recois_envoie_message(int socketfd) {
     if(opreturn[0] == 'M') {
   	strcpy(message, "La moyenne du devoir est :");
   	strcat(message,buffer);
+    } else if(opreturn[0] == 'd') {
+  	strcpy(message, "Attention, vous tentez une division par zéro.");
     } else {
-  	strcpy(message, "Le resultat est :");
+  	strcpy(message, "le resultat est :");
   	strcat(message,buffer);
     }
     // Envoi du résultat

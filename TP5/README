@@ -24,5 +24,49 @@
         	- Nous avons choisi la solution d'un return void pour la fonction de calcul suite à des problèmes de variables locales : https://overiq.com/c-programming-101/local-global-and-static-variables-in-c/
         	- La boucle pour récuperer les floats ou ints depuis un char[] est librement inspirée de la solution :https://stackoverflow.com/questions/11841782/how-can-i-assign-float-value-to-char-c-array
         	- Fonction lire_fichier librement inspirée de : https://openclassrooms.com/fr/courses/19980-apprenez-a-programmer-en-c/16421-lire-et-ecrire-dans-des-fichiers
+# Exercice 2
 
+	Pour Lire le dossier de manière récersusive, la fonction est composée de 3 parties :
+		* Initialisation des variables utiles et ouverture du répertoire avec la fonction opendir.
+		* Boucle tant que avec comme condition de parcouris tous les fichiers dans le répertoire. Si on a un fichier du type répertoire, alors nous appelons la fonction lire_dossie_rec sur le répertoire avec une augmentation de l'indentation. 
+		* fermeture du répertroire.
+
+	Exemple d'utilisation :
+	$ ./a.out 
+	Saisir un lien  : .
+	Les dossiers et sous dossiers de . sont : 
+	-repertoire.h
+	-test.c
+	-README
+	-Makefile
+	-.
+	-client.c
+	-a.out
+	-repertoire.c
+	-client.o
+	-serveur.o
+	-serveur.h
+	-client.h
+	-serveur
+	- ./discover
+	----test2.txt
+	----test3.txt
+	----test1.txt
+	----.
+	----..
+
+	-CONTRIBUTORS.txt
+	-serveur2.c
+	-serveur.c
+	- ./etudiant
+	---- ./etudiant/2
+	-------note1.txt
+	-------note3.txt
+	-------.
+	-------note5.txt
+	-------note2.txt
+	-------note4.txt
+	-------..
+	(...)
+	
 	
