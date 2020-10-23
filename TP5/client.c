@@ -9,7 +9,7 @@
     Nom : client.c
     Auteur : John Samuel & CHARRAT Philippe & BRUYERE Axel 
     Objectif : Ce code va simuler un client qui peut recevoir et émettre des messages.
-    Disclamer : Une grande partie du code a été rédiger par Mr. SAMUEL, nous n'avons qu'implémanté de petite feature, tel que l'ajout d'une en-tête. 
+    Disclamer : Une grande partie du code a été rédigée par M. SAMUEL, nous n'avons qu'implémanté de petites features, l'ajout d'un en-tête par exemple. 
 */
 #include <string.h>
 #include <stdio.h>
@@ -31,9 +31,9 @@ int envoie_recois_message(int socketfd) {
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
 
-  // Demandez à l'utilisateur d'entrer un message
+  // Demande à l'utilisateur d'entrer un message
   char message[1024];
-  puts("Votre message (max 1000 caracteres): ");
+  puts("Exemples de syntaxe : \n-> Voici mon message \n-> + a b pour sommer a + b (opérateurs disponibles : +|-|*|/)\n-> M x (avec x la matière dont on veut connaître la moyenne)\n Votre message [max 1000 caracteres] :");
   fgets(message, 1024, stdin);
   int calcul = 0; 
   
@@ -51,7 +51,7 @@ int envoie_recois_message(int socketfd) {
   }
   strcat(data, message);
   
-  // Envoie du message au serveur 
+  // Envoi du message au serveur 
   int write_status = write(socketfd, data, strlen(data));
   
   // Si cas d'échec, alors arrêt système
@@ -96,10 +96,10 @@ int main() {
   server_addr.sin_port = htons(PORT);
   server_addr.sin_addr.s_addr = INADDR_ANY;
 
-  //demande de connection au serveur
+  //demande de connexion au serveur
   int connect_status = connect(socketfd, (struct sockaddr *) &server_addr, sizeof(server_addr));
   if ( connect_status < 0 ) {
-    perror("connection serveur");
+    perror("connexion serveur");
     exit(EXIT_FAILURE);
   }
 

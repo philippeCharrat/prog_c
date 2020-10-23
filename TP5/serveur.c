@@ -8,14 +8,14 @@
     Nom : serveur.c
     Auteur : John Samuel & CHARRAT Philippe & BRUYERE Axel 
     Objectif : Ce code va simuler un serveur qui peut recevoir et émettre des messages.
-    Disclamer : Une grande partie du code a été rédiger par Mr. SAMUEL, nous n'avons qu'implémanté de petite feature, tel qu'une fonction de calcul ou de nouveau message.
-    Lien utiles : 
-        - nous avons rencontrée des difficultés à récuperer les nombre car on obtenais des valeurs abérentes, exemple: '0'-> 48. Cela était du au fait que l'on récupéré le code ASCI dont voici une table : http://www.asciitable.com/
+    Disclamer : Une grande partie du code a été rédiger par Mr. SAMUEL, nous n'avons qu'implémanté de petites features, par exemple une fonction de calcul ou de nouveau message.
+    Liens utiles : 
+        - nous avons rencontré des difficultés à récuperer les nombres car nous obtenions des valeurs aberrantes, exemple: '0'-> 48. Cela était dû au fait que l'on récupérait le code ASCI dont voici une table : http://www.asciitable.com/
         - Pour convertir des chars en floats, nous avons utilisé la fonction atof à l'aide du site : https://koor.fr/C/cstdlib/atof.wp
         - Pour convertir des chars en int, nous avons utilisé la fonction atoi à l'aide du site : https://koor.fr/C/cstdlib/atoi.wp
-        - Pour convertir des ints en floats, on a utilisé la solution proposé sur : https://www.tutorialspoint.com/cprogramming/c_type_casting.htm
-        - Nous avons choisis la solution d'un return void pour la fonction de calcul suite à des problèmes de variables locales : https://overiq.com/c-programming-101/local-global-and-static-variables-in-c/
-        - La boucle pour récuperer les floats ou ints depuis un char[] est librement inspirés de la solution :https://stackoverflow.com/questions/11841782/how-can-i-assign-float-value-to-char-c-array
+        - Pour convertir des ints en floats, nous avons utilisé la solution proposée sur : https://www.tutorialspoint.com/cprogramming/c_type_casting.htm
+        - Nous avons choisi la solution d'un return void pour la fonction de calcul suite à des problèmes de variables locales : https://overiq.com/c-programming-101/local-global-and-static-variables-in-c/
+        - La boucle pour récuperer les floats ou ints depuis un char[] est librement inspirée de la solution :https://stackoverflow.com/questions/11841782/how-can-i-assign-float-value-to-char-c-array
         - Fonction lire_fichier librement inspirée de : https://openclassrooms.com/fr/courses/19980-apprenez-a-programmer-en-c/16421-lire-et-ecrire-dans-des-fichiers
 */
 
@@ -33,7 +33,7 @@
 
 // Fonction pour ouvrir et récuperer les chiffres d'un fichier 
 int lire_fichier(char *nom_de_fichier){
-    // Initialisations des variables utiles ---
+    // Initialisation des variables utiles ---
     int fichier;
     char carac;
     char tempchar[3];
@@ -45,7 +45,7 @@ int lire_fichier(char *nom_de_fichier){
     if (fichier != 0) {
 	    while (1) {
 		    size = read(fichier,&carac,1);
-        // Si le fichier est finie alors on sort de la boucle
+        // Si le fichier est fini alors on sort de la boucle
 		    if(size<1) { break;}
 		    if(carac != 10) {
 			    tempchar[cmpt] = carac;
@@ -56,21 +56,21 @@ int lire_fichier(char *nom_de_fichier){
     }
     close(fichier);
 
-    // Retous du int contenu dans le fichier
+    // Retour du int contenu dans le fichier
     return(cmpt);
 }
 
 // Fonction qui va traiter l'opération pour des entiers 
 int operation(char op,int a,int b) {
 	int c;
-  // Un switch qui contient les cas possibles
+  // Un switch qui contient les différents cas possibles
 	switch(op) {
 		case '+' :c = a+b;break;
 		case '-' :c = a-b;break;
 		case '*' :c = a*b;break;
 		case '/' :c = a/b;break;
 	}
-  // Retours d'un entié C
+  // Retour d'un entier C
 	return c;
 }
 
@@ -84,18 +84,18 @@ double operationf(char op,double a,double b) {
 		case '*' :c = a*b;break;
 		case '/' :c = a/b;break;
 	}
-  // Retours d'un float c
+  // Retour d'un float c
 	return c;
 }
 
-// Fonction pour la partie : réalisation d'un calcul à partir de saisies utilisateurs ou de la moyenne. 
+// Fonction pour la partie : réalisation d'un calcul à partir de saisies utilisateur ou de la moyenne. 
 // Inputs : 
-// - data : tableau contenant le messages de l'utilisateurs 
-// - buffer : tableau vide pour récuperer le résultat de l'opération.
+// - data : tableau contenant le message de l'utilisateur 
+// - buffer : tableau vide pour récuperer le résultat de l'opération
 // Outputs : 
-// - int : 0, cette fonction ne nécessite aucun retour particulié.
+// - int : 0, cette fonction ne nécessite aucun retour particulier.
 int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
-  // Initialisations des variables utiles ---
+  // Initialisation des variables utiles ---
   char op; 
   char atemp[10];
   char btemp[10];
@@ -108,7 +108,7 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
   double af = 0;
   double bf = 0; 
 
-  // Initialisations d'un pointeur sur le message utilisateurs tronqué des 8 premiers caractère ('calcul : '')
+  // Initialisation d'un pointeur sur le message utilisateur tronqué des 8 premiers caractères ('calcul : '')
   char * ptr_data = &(data[0]);
   ptr_data += 8;
 
@@ -135,7 +135,7 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
     // Partie Initialisation de la valeur a 
     else if (a == 0 && af == 0) {
 
-      // Cas 1 : la valeur est finie (présence d'un espace), convertions de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
+      // Cas 1 : la valeur est finie (présence d'un espace), convertion de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
       if (*ptr_data == ' ' || *ptr_data == 10) {  
          if (fa == 0) {  a = atoi(atemp);}
 	       else { af = atof(atemp);}
@@ -152,7 +152,7 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
 
     // Partie Initialisation de la valeur b si le mode est 3
     else if (b == 0 && bf == 0 && mode==3) {
-      // Cas 1 : la valeur est finie (présence d'un espace), convertions de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
+      // Cas 1 : la valeur est finie (présence d'un espace), convertion de la valeur en int ou double en fonction de la présence (ou non) du caractère '.'
       if (*ptr_data == ' ' ||*ptr_data == '\0' || *ptr_data == 10  ) {
         if (fb == 0) { b = atoi(btemp);}
         else { bf = atof(btemp);}
@@ -179,7 +179,7 @@ int recois_numero_calcule(char* data,char* buffer, char *opreturn) {
     	int result = operation(op,a,b);
       sprintf(buffer,"%d",result);
     }
-    // Cas 2 et 3 : a ou b est un float et on convertie l'autre en float pour faire le calcul. 
+    // Cas 2 et 3 : a ou b est un float et on convertit l'autre en float pour faire le calcul. 
     else if( fa == 0 && fb == 1) {
     	af = (double) a;
       double result = operationf(op,af,bf);
@@ -250,7 +250,7 @@ int renvoie_message(int client_socket_fd, char *data) {
   }
 }
 
-/* accepter la nouvelle connection d'un client et lire les données
+/* accepter la nouvelle connexion d'un client et lire les données
  * envoyées par le client. En suite, le serveur envoie un message
  * en retour
  */
@@ -260,7 +260,7 @@ int recois_envoie_message(int socketfd) {
 
   int client_addr_len = sizeof(client_addr);
  
-  // nouvelle connection de client
+  // nouvelle connexion de client
   int client_socket_fd = accept(socketfd, (struct sockaddr *) &client_addr, &client_addr_len);
   if (client_socket_fd < 0 ) {
     perror("accept");
@@ -297,9 +297,9 @@ int recois_envoie_message(int socketfd) {
     // Envoie du nouveau message --- 
   	renvoie_message(client_socket_fd,message);
   } 
-  //Cas 2 : Si le message commence par le mot: 'calcul:', alors le serveur renvoye le résultat vers le client.  
+  //Cas 2 : Si le message commence par le mot: 'calcul:', alors le serveur renvoie le résultat vers le client.  
   else if (strcmp(code, "calcul:") == 0) {
-    // Initialisations des variables utiles ---
+    // Initialisation des variables utiles ---
     char buffer[30];
     char message[100];
     char opreturn[1];
@@ -314,11 +314,11 @@ int recois_envoie_message(int socketfd) {
   	strcpy(message, "Le resultat est :");
   	strcat(message,buffer);
     }
-    // Envoie du résultat
+    // Envoi du résultat
   	renvoie_message(client_socket_fd,message);
   }
 
-  //fermer le socket 
+  //fermer la socket 
   close(socketfd);
 }
 

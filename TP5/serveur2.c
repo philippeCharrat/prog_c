@@ -76,8 +76,8 @@ int renvoie_message(int client_socket_fd, char *data) {
   }
 }
 
-/* accepter la nouvelle connection d'un client et lire les données
- * envoyées par le client. En suite, le serveur envoie un message
+/* accepter la nouvelle connexion d'un client et lire les données
+ * envoyées par le client. Ensuite, le serveur envoie un message
  * en retour
  */
 int recois_envoie_message(int socketfd) {
@@ -86,7 +86,7 @@ int recois_envoie_message(int socketfd) {
 
   int client_addr_len = sizeof(client_addr);
  
-  // nouvelle connection de client
+  // nouvelle connexion de client
   int client_socket_fd = accept(socketfd, (struct sockaddr *) &client_addr, &client_addr_len);
   if (client_socket_fd < 0 ) {
     perror("accept");
@@ -114,14 +114,11 @@ int recois_envoie_message(int socketfd) {
 
   //Si le message commence par le mot: 'message:' 
   if (strcmp(code, "message:") == 0) {
-    	//renvoie_message(client_socket_fd, data);
   	char message[1024];
   	printf("Renvoyez un nouveau message : ");
   	fgets(message,1024,stdin);
   	renvoie_message(client_socket_fd,message);
-  } else if (strcmp(code, "calcul:") == 0) {
-    	//renvoie_message(client_socket_fd, data);
-	
+  } else if (strcmp(code, "calcul:") == 0) {	
   	int result = recois_numero_calcule(data);
 	char buffer[10];
 	sprintf(buffer,"%d",result);
@@ -132,7 +129,7 @@ int recois_envoie_message(int socketfd) {
 	renvoie_message(client_socket_fd,message);
   }
 
-  //fermer le socket 
+  //Fermer le socket 
   close(socketfd);
 }
 
@@ -145,7 +142,7 @@ int main() {
   struct sockaddr_in server_addr, client_addr;
 
   /*
-   * Creation d'une socket
+   * Création d'une socket
    */
   socketfd = socket(AF_INET, SOCK_STREAM, 0);
   if ( socketfd < 0 ) {
@@ -156,7 +153,7 @@ int main() {
   int option = 1;
   setsockopt(socketfd, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
 
-  //détails du serveur (adresse et port)
+  //Détails du serveur (adresse et port)
   memset(&server_addr, 0, sizeof(server_addr));
   server_addr.sin_family = AF_INET;
   server_addr.sin_port = htons(PORT);

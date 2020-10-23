@@ -1,0 +1,28 @@
+# Bibliothèques :
+	
+	->include <sys/types.h> 
+	->include <sys/socket.h>
+	->include <sys/stat.h>
+	->include <sys/epoll.h>
+	->include <netinet/in.h>
+	->include <stdio.h>
+	->include <stdlib.h>
+	->include <string.h>
+	->include <unistd.h>
+	->include <fcntl.h>
+	->include <dirent.h>
+
+
+# Références :
+
+	->Pour les scripts client.c et serveur.c : le code de M. SAMUEL fourni avec le TP
+	->Pour le script serveur.c :
+		- Table ASCII : http://www.asciitable.com/
+        	- Pour convertir des chars en floats, nous avons utilisé la fonction atof à l'aide du site : https://koor.fr/C/cstdlib/atof.wp
+        	- Pour convertir des chars en int, nous avons utilisé la fonction atoi à l'aide du site : https://koor.fr/C/cstdlib/atoi.wp
+        	- Pour convertir des ints en floats, nous avons utilisé la solution proposée sur : https://www.tutorialspoint.com/cprogramming/c_type_casting.htm
+        	- Nous avons choisi la solution d'un return void pour la fonction de calcul suite à des problèmes de variables locales : https://overiq.com/c-programming-101/local-global-and-static-variables-in-c/
+        	- La boucle pour récuperer les floats ou ints depuis un char[] est librement inspirée de la solution :https://stackoverflow.com/questions/11841782/how-can-i-assign-float-value-to-char-c-array
+        	- Fonction lire_fichier librement inspirée de : https://openclassrooms.com/fr/courses/19980-apprenez-a-programmer-en-c/16421-lire-et-ecrire-dans-des-fichiers
+
+	
