@@ -84,7 +84,7 @@ void analyse(char *pathname, char *data) {
   strcat(data, temp_string);
   
   //choisir 10 couleurs
-  for (count = 1; count < 11 && cc->size - count >0; count++) {
+  for (count = 1; count < test+1 && cc->size - count >0; count++) {
     if(cc->compte_bit ==  BITS32) {
       sprintf(temp_string, "#%02x%02x%02x,", cc->cc.cc24[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
     }
