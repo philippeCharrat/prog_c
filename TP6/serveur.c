@@ -24,6 +24,9 @@ void plot(char *data) {
   int count = 0;
   int n;
   char *saveptr = NULL;
+  for( int i = 0; i < strlen(data); i++) {
+    printf("%c\n",data(i));
+  }
   char *str = data;
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
