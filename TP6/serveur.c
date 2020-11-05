@@ -25,6 +25,7 @@ void plot(char *data) {
   int n;
   char *saveptr = NULL;
   char *str = data;
+  int miseneforme = 0;
 
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
@@ -39,11 +40,12 @@ void plot(char *data) {
     str=NULL;
     if (count == 0) {
       n = atoi(token);
+      miseneforme = 360/n;
     }
     else {
-	
+	   
       // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
-      fprintf(p, "0 0 10 %d %d 0x%s\n", (count-1)*36, count*36, token+1);
+      fprintf(p, "0 0 10 %d %d 0x%s\n", (count-1)*miseneforme, count*miseneforme, token+1);
     }
     count++;
   }
