@@ -78,10 +78,14 @@ void analyse(char *pathname, char *data) {
 	}
   }
   
-  if (cc->size < 10) {
+  /*if (cc->size < 10) {
     sprintf(temp_string, "%d,", cc->size);
-  }
+  }*/
+  strcat(data,",");
+  temp_string[strlen(temp_string)-1] = '\0';
+  
   strcat(data, temp_string);
+   strcat(data,",");
   
   //choisir 10 couleurs
   for (count = 1; count < test+1 && cc->size - count >0; count++) {

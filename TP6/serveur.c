@@ -13,13 +13,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <string.h>
 #include "serveur.h"
 
 void plot(char *data) {
   //Extraire le compteur et les couleurs RGB 
   FILE *p = popen("gnuplot -persist", "w");
-  printf("Plot");
+  printf("Plot : \n");
   int count = 0;
   int n;
   char *saveptr = NULL;
@@ -37,13 +37,27 @@ void plot(char *data) {
       break;
     }
     str=NULL;
-    if (count == 0) {
-      n = atoi(token);
-	miseneforme = (int) 360/10;
-	printf("%d\n",n);
+    if (count == 0|| n==0) {
+        //n = atoi(token);
+	char snum[5];
+	printf("|%s| - ",token);
+	for(int j=0;j<31;j++) {
+		memset(snum,0,strlen(snum));
+		sprintf(snum,"%d",j);
+		if (strcmp(snum,token)==0) {
+			printf("coucou grosse folle");
+			n = j+0;
+			miseneforme = (int) 360/n;
+			printf("|%s| - %d\n",token,n);
+			break;
+		}
+	}
     }
     else {
-	   
+		   
+      // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
+      printf("%d %d %d 0x%s\n",n, (count-1)*miseneforme, count*miseneforme, token+1);
+    
       // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
       fprintf(p, "0 0 %d %d %d 0x%s\n",n, (count-1)*miseneforme, count*miseneforme, token+1);
     }
