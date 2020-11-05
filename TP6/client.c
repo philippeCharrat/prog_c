@@ -60,10 +60,24 @@ int envoie_recois_message(int socketfd) {
 void analyse(char *pathname, char *data) {
   //compte de couleurs
   couleur_compteur *cc = analyse_bmp_image(pathname);
-
+  
+  int test;
   int count;
   strcpy(data, "couleurs: ");
-  char temp_string[10] = "10,";
+  char temp_string[10];
+  printf("Saisir le nombre de couleur à analyser (max < 30) : ");
+  fgets(temp_string,10,stdin);
+  while(1) {
+	test = atoi(temp_string);
+	if (test < 31 && test > 0 ) {
+		break;
+	} else {
+		memset(temp_string,0,strlen(temp_string));
+  		printf("Saisir le nombre de couleur à analyser (max < 30) : ");
+  		fgets(temp_string,10,stdin);		
+	}
+  }
+  
   if (cc->size < 10) {
     sprintf(temp_string, "%d,", cc->size);
   }

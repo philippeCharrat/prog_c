@@ -24,10 +24,8 @@ void plot(char *data) {
   int count = 0;
   int n;
   char *saveptr = NULL;
-  for( int i = 0; i < strlen(data); i++) {
-    printf("%c\n",data(i));
-  }
   char *str = data;
+
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
   fprintf(p, "set style fill transparent solid 0.9 noborder\n");
@@ -43,6 +41,7 @@ void plot(char *data) {
       n = atoi(token);
     }
     else {
+	
       // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
       fprintf(p, "0 0 10 %d %d 0x%s\n", (count-1)*36, count*36, token+1);
     }
