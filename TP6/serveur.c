@@ -17,7 +17,6 @@
 #include "serveur.h"
 
 void plot(char *data) {
-printf("coucou ^");
   //Extraire le compteur et les couleurs RGB 
   FILE *p = popen("gnuplot -persist", "w");
   printf("Plot");
@@ -26,7 +25,7 @@ printf("coucou ^");
   char *saveptr = NULL;
   char *str = data;
   int miseneforme;
-	printf("coucou0");
+
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
   fprintf(p, "set style fill transparent solid 0.9 noborder\n");
@@ -40,9 +39,8 @@ printf("coucou ^");
     str=NULL;
     if (count == 0) {
       n = atoi(token);
-      printf("coucou1");
 	miseneforme = (int) 360/10;
-	printf("coucou2");
+	printf("%d\n",n);
     }
     else {
 	   
