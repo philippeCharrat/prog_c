@@ -40,12 +40,11 @@ void plot(char *data) {
     if (count == 0|| n==0) {
         //n = atoi(token);
 	char snum[5];
-	printf("|%s| - ",token);
+	printf("|%s| - \n",token);
 	for(int j=0;j<31;j++) {
 		memset(snum,0,strlen(snum));
 		sprintf(snum,"%d",j);
 		if (strcmp(snum,token)==0) {
-			printf("coucou grosse folle");
 			n = j+0;
 			miseneforme = (int) 360/n;
 			printf("|%s| - %d\n",token,n);
