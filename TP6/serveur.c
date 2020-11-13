@@ -29,8 +29,8 @@ void plot(char *data) {
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
   fprintf(p, "set style fill transparent solid 0.9 noborder\n");
+  fprintf(p, "set title 'Top 10 colors'\n");
   fprintf(p, "plot '-' with circles lc rgbcolor variable\n");
-
   while(1) {
     char *token = strtok_r(str, ",", &saveptr);
     if (token == NULL) {
@@ -38,31 +38,26 @@ void plot(char *data) {
     }
     str=NULL;
     if (count == 0|| n==0) {
-      // Initialisation des variables utiles
-    	char snum[5];
-      // Boucle for de 30 cas (nombre max de couleur)
-    	for(int j=0;j<31;j++) {
-        // Reset de la boucle de test
-    		memset(snum,0,strlen(snum));
-        // Convertion du int en str
-    		sprintf(snum,"%d",j);
-        // Si la chaine de caractère égale le compteur, on a "trouvé" sa valeur
-    		if (strcmp(snum,token)==0) {
-    			// Sauvegarde de la valeur dans une nouvelle variable
-          n = j+0;
-          // Calcul de la nouvelle aire d'une section du graphe
-    			miseneforme = (int) 360/n;
-          fprintf(p, "set title 'Top %d colors'\n",n);
-    			break;
-    		}
-    	}
+        //n = atoi(token);
+	char snum[5];
+	printf("|%s| - \n",token);
+	for(int j=0;j<31;j++) {
+		memset(snum,0,strlen(snum));
+		sprintf(snum,"%d",j);
+		if (strcmp(snum,token)==0) {
+			n = j+0;
+			miseneforme = (int) 360/n;
+			printf("|%s| - %d\n",token,n);
+			break;
+		}
+	}
     }
     else {
 		   
-      // Affichage dans le terminale de la couleur
+      // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
       printf("%d %d %d 0x%s\n",n, (count-1)*miseneforme, count*miseneforme, token+1);
     
-      // Affichage dans le graphe de la couleur
+      // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
       fprintf(p, "0 0 %d %d %d 0x%s\n",n, (count-1)*miseneforme, count*miseneforme, token+1);
     }
     count++;

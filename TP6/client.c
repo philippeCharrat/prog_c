@@ -58,39 +58,36 @@ int envoie_recois_message(int socketfd) {
 }
 
 void analyse(char *pathname, char *data) {
-  //Variables utiles ---
+  //compte de couleurs
   couleur_compteur *cc = analyse_bmp_image(pathname);
+  
   int test;
   int count;
   strcpy(data, "couleurs: ");
-  // Saisie du nombre de couleurs 
   char temp_string[10];
   printf("Saisir le nombre de couleur à analyser (max < 30) : ");
   fgets(temp_string,10,stdin);
-
-  // Boucle infinie
   while(1) {
-    // Convertion de la variable char to int 
-  	test = atoi(temp_string);
-    // si la saisie correspond à l'intervalle, on break
-  	if (test < 31 && test > 0 ) {
-  		break;
-  	} 
-    // Sinon on re-saisie une nouvelle valeur
-    else {
-  		memset(temp_string,0,strlen(temp_string));
-    	printf("Saisir le nombre de couleur à analyser (max < 30) : ");
-    	fgets(temp_string,10,stdin);		
-  	}
+	test = atoi(temp_string);
+	if (test < 31 && test > 0 ) {
+		break;
+	} else {
+		memset(temp_string,0,strlen(temp_string));
+  		printf("Saisir le nombre de couleur à analyser (max < 30) : ");
+  		fgets(temp_string,10,stdin);		
+	}
   }
   
-  // Ajout de la valeur de dans la chaine de caractère
+  /*if (cc->size < 10) {
+    sprintf(temp_string, "%d,", cc->size);
+  }*/
   strcat(data,",");
   temp_string[strlen(temp_string)-1] = '\0';
-  strcat(data, temp_string);
-  strcat(data,",");
   
-  //choisir X couleurs (saisie par l'utilisateur)
+  strcat(data, temp_string);
+   strcat(data,",");
+  
+  //choisir 10 couleurs
   for (count = 1; count < test+1 && cc->size - count >0; count++) {
     if(cc->compte_bit ==  BITS32) {
       sprintf(temp_string, "#%02x%02x%02x,", cc->cc.cc24[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
