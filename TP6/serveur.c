@@ -29,32 +29,36 @@ void plot(char *data) {
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
   fprintf(p, "set style fill transparent solid 0.9 noborder\n");
-  fprintf(p, "set title 'Top 10 colors'\n");
   fprintf(p, "plot '-' with circles lc rgbcolor variable\n");
+  Boucle infinie 
   while(1) {
+    //Récupère la ième valeur de data
     char *token = strtok_r(str, ",", &saveptr);
     if (token == NULL) {
       break;
     }
     str=NULL;
+    // Si le n n'est pas encore définie, on le cherche 
     if (count == 0|| n==0) {
-        //n = atoi(token);
-	char snum[5];
-	printf("|%s| - \n",token);
-	for(int j=0;j<31;j++) {
-		memset(snum,0,strlen(snum));
-		sprintf(snum,"%d",j);
-		if (strcmp(snum,token)==0) {
-			n = j+0;
-			miseneforme = (int) 360/n;
-			printf("|%s| - %d\n",token,n);
-			break;
-		}
-	}
+      // Variable utiles 
+    	char snum[5];
+
+      // Faire une boucle de 0 à 30 qui va tester chaque valeur en str
+    	for(int j=0;j<31;j++) {
+    		memset(snum,0,strlen(snum));
+    		sprintf(snum,"%d",j);
+        // Si on obtient la bonne valeur alors on a trouvé le nombre de couleurs 
+    		if (strcmp(snum,token)==0) {
+    			n = j+0;
+    			miseneforme = (int) 360/n;
+          fprintf(p, "set title 'Top %d colors'\n",n);
+    			break;
+    		}
+	 }
     }
     else {
 		   
-      // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
+      //Affichage dans le terminal 
       printf("%d %d %d 0x%s\n",n, (count-1)*miseneforme, count*miseneforme, token+1);
     
       // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36

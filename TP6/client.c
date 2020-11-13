@@ -58,36 +58,38 @@ int envoie_recois_message(int socketfd) {
 }
 
 void analyse(char *pathname, char *data) {
-  //compte de couleurs
+  //Initialisation des commentaires 
   couleur_compteur *cc = analyse_bmp_image(pathname);
-  
   int test;
   int count;
   strcpy(data, "couleurs: ");
+  // Récupération d'une première valeur de l'utilisateur 
   char temp_string[10];
   printf("Saisir le nombre de couleur à analyser (max < 30) : ");
   fgets(temp_string,10,stdin);
+
+  // Bouclez vraie tant que la valeur utilisateur n'est pas bonne 
   while(1) {
 	test = atoi(temp_string);
+  // Si elle est bonne, on quitte la boucle
 	if (test < 31 && test > 0 ) {
 		break;
-	} else {
+	} 
+  // On re-saisie la valeur 
+  else {
 		memset(temp_string,0,strlen(temp_string));
   		printf("Saisir le nombre de couleur à analyser (max < 30) : ");
   		fgets(temp_string,10,stdin);		
 	}
   }
   
-  /*if (cc->size < 10) {
-    sprintf(temp_string, "%d,", cc->size);
-  }*/
+  //Ajout à la chaine data le nombre et des virgules de mise en formes  
   strcat(data,",");
   temp_string[strlen(temp_string)-1] = '\0';
-  
   strcat(data, temp_string);
    strcat(data,",");
   
-  //choisir 10 couleurs
+  //choisir n couleurs
   for (count = 1; count < test+1 && cc->size - count >0; count++) {
     if(cc->compte_bit ==  BITS32) {
       sprintf(temp_string, "#%02x%02x%02x,", cc->cc.cc24[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
@@ -98,7 +100,7 @@ void analyse(char *pathname, char *data) {
     strcat(data, temp_string);
   }
 
-  //enlever le dernier virgule
+  //enlever la dernière virgule
   data[strlen(data)-1] = '\0';
 }
 
