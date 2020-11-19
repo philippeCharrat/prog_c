@@ -1,0 +1,11 @@
+# Bibliothèques:
+  *stdio.h
+  *math.h : binaire.c
+  *stdlib.h : cercle.c, boucles.c
+
+# Références : 
+  * Pour faire fonctionner la récupération d'argument argv et le convertir en int, nous avons utilisé une partie du code de la page : https://koor.fr/C/cstdlib/atoi.wp
+
+# Commentaires 
+  * Chaque code est commenté.
+  * Dans le code cercle.c, nous avons fixé la valeur de pi à 3.14. Nous aurions pu utiliser une bibliothèque comme math.h.
